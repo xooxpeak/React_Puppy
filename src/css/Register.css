@@ -22,7 +22,7 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px solid rgb(163, 156, 231);
+    border: 2px solid rgb(163, 156, 231);
     border-radius: 20px;
     padding: 20px;
     background-color: #ffffff;
@@ -53,6 +53,16 @@ form {
     border-radius: 5px;
     padding: 0 10px;
     margin-bottom: 10px;
+}
+
+input[name=register_email_write] {
+    width: 50%;
+    height: 30px;
+    border: 1px solid rgb(163, 156, 231);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    margin-left: 47%; 
 }
 
 #dupIdCheck {
