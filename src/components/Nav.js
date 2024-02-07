@@ -36,7 +36,7 @@ let Nav = () => {
                 </span>
                 <span>
                     <NavLink to="/login">
-                        <button id="loginBut">
+                        <button id="navLoginBut">
                             로그인
                         </button>
                     </NavLink>
