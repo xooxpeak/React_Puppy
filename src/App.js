@@ -6,7 +6,7 @@ import PuppyNote from './pages/PuppyNote';
 import Gallery from './pages/Gallery';
 import Board from './pages/Board';
 import Follow from './pages/Follow';
-import Login from './Login';
+import Login from './pages/Login';
 import Register from './pages/Register';
 
 function App() {
