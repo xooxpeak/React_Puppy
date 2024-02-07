@@ -10,7 +10,7 @@ div h5 {
 
 .loginForm {
     width: 600px;
-    height: 400px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -46,5 +46,18 @@ h1#login_title {
     font-size: 17px;
     height: 50px;
     width: 300px;
-    margin : 20px 0 30px 0;
+    margin : 20px 0 10px 0;
+}
+
+#loginBut:hover {
+    background-color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
+}
+
+.link a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: rgb(107, 107, 107); /* 색상 변경 */
+}
+
+.link a:hover {
+    color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import '../css/Login.css';
 import Nav from "../components/Nav";
+import { NavLink } from "react-router-dom";
 
 class Login extends React.Component {
     render() {
@@ -15,13 +16,17 @@ class Login extends React.Component {
                     </div>
                     <div>
                         <div className="input">
-
                             <input type="text" className="userId" id="userId" placeholder="아이디" autoFocus></input>
                             <input type="password" className="password" id="password" placeholder="비밀번호"></input>
-                            <button id="loginBut">로그인</button>
-
+                            <button id="loginBut">Login</button>
                         </div>
-
+                        <div className="link">
+                            <NavLink to="/findId">아이디 찾기</NavLink>
+                            <span>&nbsp;|&nbsp;</span>
+                            <NavLink to="/findPw">비밀번호 찾기</NavLink>
+                            <span>&nbsp;|&nbsp;</span>
+                            <NavLink to="/register">회원가입</NavLink>
+                        </div>
                     </div>
                 </form>
             </div>

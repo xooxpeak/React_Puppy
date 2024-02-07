@@ -7,7 +7,7 @@ let Nav = () => {
 
     return (
         <nav>
-            <div>
+            <div className="nav-link">
                 
                 <span>
                     <NavLink to="/">
