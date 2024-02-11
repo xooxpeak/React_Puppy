@@ -8,6 +8,7 @@ import Board from './pages/Board';
 import Follow from './pages/Follow';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RegisterPuppy from './pages/RegisterPuppy';
 
 function App() {
   return (
@@ -21,10 +22,10 @@ function App() {
             <Route path='/follow' element={<Follow/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
 						<Route path='/register' element={<Register/>}></Route>
+            <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
             {/* <Route path='/findId' element={<FindId/>}></Route>
             <Route path='/findPw' element={<FindPw/>}></Route>
             <Route path='/resetPw' element={<ResetPw/>}></Route>
-            <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
             <Route path='/myPage' element={<MyPage/>}></Route>
             <Route path='/likeList' element={<LikeList/>}></Route>
             <Route path='/writeList' element={<WriteList/>}></Route>
