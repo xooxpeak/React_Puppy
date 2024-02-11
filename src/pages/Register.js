@@ -4,6 +4,7 @@ import Nav from "../components/Nav";
 import { useState } from "react";
 import axios from "axios";
 
+// useState 훅을 사용하여 객체 형태의 user 상태 선언
 let Register = () => {
     let [user,setUser] = useState({
         userId : "",
@@ -38,6 +39,9 @@ let Register = () => {
     //     }
     // }
 
+    // 사용자가 입력한 아이디가 중복되는지 확인하기 위해 서버로 요청을 보내는 함수
+    // axios를 사용하여 HTTP POST 요청을 보내고
+    // 서버의 응답을 콘솔에 출력
     let dupIdCheck = () => {
         axios.post('http://localhost:8082/api/v1/auth/n/dupIdCheck', {
             params:{
@@ -48,6 +52,7 @@ let Register = () => {
         });
     }
 
+    // useState 훅으로 관리되는 user 객체의 속성을 업데이트하는 함수
     let onChangeUserData = (e) => {
         setUser({...user, [e.target.name] : e.target.value})
         console.log(user);
@@ -60,7 +65,7 @@ let Register = () => {
             </div>
           <form className="registerForm">
             <div>
-            <h1 id='register_title'> 회원가입</h1>
+                <h1 id='register_title'> 회원가입</h1>
             </div>
             <div className='register'>
                 <div>
@@ -115,7 +120,7 @@ let Register = () => {
             </div>
 
             <div>
-            <button type="submit" id="sbtn">가입하기&nbsp;🎉</button>
+                <button type="submit" id="sbtn">가입하기&nbsp;🎉</button>
             </div>
         </form>
       </div>
