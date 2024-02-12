@@ -95,7 +95,7 @@ let RegisterPuppy = () => {
                 </div>
 
                 <div>
-                    <button type="submit" id="sbtn" onClick={register}>등록하기&nbsp;🐶</button>
+                    <button type="submit" id="registerPuppyBut" onClick={register}>등록하기&nbsp;🐶</button>
                 </div>
             </form>
         </div>

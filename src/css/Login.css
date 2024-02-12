@@ -9,11 +9,12 @@ div h5 {
 }
 
 .loginForm {
-    width: 600px;
+    width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: auto;
     align-items: center;
     position: absolute;
     border: 5px solid rgb(163, 156, 231);

@@ -3,12 +3,17 @@
     font-family: 'SUIT-Medium';
 }
 
+div h5 {
+    margin-bottom: 3px; 
+    color: rgb(107, 107, 107);
+}
+
 div > div {
     margin-bottom: 3px; 
 }
 
 form {
-    width: 600px;
+    width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -17,6 +22,7 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    margin-top: 120px; /* Nav 아래 여백 추가 */
     border: 5px solid rgb(163, 156, 231);
     border-radius: 20px;
     padding: 20px;
@@ -66,18 +72,14 @@ input[name=register_email_write] {
     width: 80px;
     height: 30px;
     font-size: 13px;
-    border: 1px solid rgb(163, 156, 231);
+    border: 1px solid rgb(89,117,196);
     border-radius: 5px;
     margin-left: 10px;
 }
 
-#dupIdCheck:hover {
-    background-color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
-}
-
 #register_title {
     text-align: center;
-    color: rgb(2, 2, 2);
+    color: rgb(12, 12, 12);
 }
 
 select {
@@ -97,7 +99,7 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .register {
@@ -116,9 +118,5 @@ button {
     font-weight: bold;
     border : none;
     border-radius: 5px;
-    margin : 50px 0 20px 0;
-}
-
-#sbtn:hover {
-    background-color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
+    margin : 20px 0 50px 0;
 }
