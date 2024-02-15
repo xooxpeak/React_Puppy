@@ -9,10 +9,10 @@ let Register = () => {
     let [user,setUser] = useState({
         userId : "",
         password : "",
+        password2 : "",
         name : "",
         birth : "",
         email : "",
-        phone : "",
         addr1 : "",
         addr2 : ""
     });
@@ -43,12 +43,21 @@ let Register = () => {
     // axios를 사용하여 HTTP POST 요청을 보내고
     // 서버의 응답을 콘솔에 출력
     let dupIdCheck = () => {
-        axios.post('http://localhost:8082/api/v1/auth/n/dupIdCheck', {
-            params:{
-                userId: user.userId
-            }
+        // 입력란이 비어있을 경우의 경고창
+        if(!user.userId){
+            alert("아이디를 입력해주세요.");
+            return;  // 함수 실행을 중단하고 반환
+        }
+        axios.post(`http://localhost:8082/api/v1/auth/n/dupIdCheck?userId=${user.userId}`, {
         }).then((res) => {
-            console.log(res);
+            // 중복인 경우 (true)
+            if(res.data) {
+                alert("이미 사용 중인 아이디입니다.");
+                document.getElementById("userId").focus();
+            } else {
+                alert("사용 가능한 아이디입니다.");
+            }
+            console.log(res.data);
         });
     }
 
@@ -85,7 +94,7 @@ let Register = () => {
                     {/* 비밀번호 확인 */}
                     <div>
                         <h5> 비밀번호 확인 </h5>
-                        <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인"/>
+                        <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인"/>
                     </div>
                 
                     {/* 이름 */}
@@ -98,7 +107,7 @@ let Register = () => {
                     <div>
                         <h5> 생년월일 </h5>
                         <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'/> -&nbsp; 
-                        <input type='text' className="input-field3" maxLength='1' name='register_sex'/> ******
+                        <input type='text' className="input-field3" maxLength='1' name='birth2'/> ******
                     </div>
 
                     {/* 이메일 */}
@@ -120,7 +129,7 @@ let Register = () => {
             </div>
 
             <div>
-                <button type="submit" id="sbtn">가입하기&nbsp;🎉</button>
+                <button type="button" id="sbtn">가입하기&nbsp;🎉</button>
             </div>
         </form>
       </div>
