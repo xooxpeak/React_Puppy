@@ -3,8 +3,7 @@ import '../css/Login.css';
 import Nav from "../components/Nav";
 import { NavLink } from "react-router-dom";
 
-class Login extends React.Component {
-    render() {
+let Login = () => {
         return (
             <div>
                 <div>
@@ -30,8 +29,7 @@ class Login extends React.Component {
                     </div>
                 </form>
             </div>
-        )
+        );
     }
-}
 
 export default Login;
