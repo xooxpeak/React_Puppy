@@ -11,7 +11,7 @@ let Register = () => {
         password : "",
         password2 : "",
         name : "",
-        birth : "",
+ //       birth : "",
         email : "",
         addr1 : "",
         addr2 : ""
@@ -61,6 +61,27 @@ let Register = () => {
         });
     }
 
+    // 회원가입
+    let register = () => {
+        // 입력란이 비어있을 경우의 경고창
+        // if(!user.userId || !user.password || !user.name || !user.password2 || !user.birth || !user.email){
+        //     alert("모든 항목을 다 작성해주세요.");
+        //     return;  // 함수 실행을 중단하고 반환
+        // }
+        axios.post('http://localhost:8082/api/v1/auth/n/register', user)
+        .then((res) => {
+        
+            // 회원가입 성공
+            alert("회원가입이 완료되었습니다!");
+            console.log("Response:", res.data);
+        })
+        .catch((error) => {
+            // 회원가입 실패
+            alert("회원가입에 실패했습니다. 다시 확인해주세요.");
+            console.error("Error:", error);
+        });
+    }
+
     // useState 훅으로 관리되는 user 객체의 속성을 업데이트하는 함수
     let onChangeUserData = (e) => {
         setUser({...user, [e.target.name] : e.target.value})
@@ -81,44 +102,44 @@ let Register = () => {
                     {/* 아이디 */}
                     <div>
                         <h5> 아이디 </h5>
-                        <input type='text' className="input-field" name={"userId"} onChange={onChangeUserData} maxLength='20' placeholder="7자 이상의 문자" autoFocus/>
+                        <input type='text' className="input-field" name={"userId"} onChange={onChangeUserData} maxLength='20' placeholder="7자 이상의 문자의 아이디를 입력해주세요." autoFocus/>
                         <button type="button" id="dupIdCheck" onClick={dupIdCheck}>중복확인</button>
                     </div>
 
                     {/* 비밀번호 */}
                     <div>
                         <h5> 비밀번호 </h5>
-                        <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호"/>
+                        <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호를 입력해주세요."/>
                     </div>
 
                     {/* 비밀번호 확인 */}
                     <div>
                         <h5> 비밀번호 확인 </h5>
-                        <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인"/>
+                        <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인을 위해 한번 더 입력해주세요."/>
                     </div>
                 
                     {/* 이름 */}
                     <div>
                         <h5> 이름 </h5>
-                        <input type='text' className="input-field" name={"name"} onChange={onChangeUserData} maxLength='10' placeholder="이름"/>
+                        <input type='text' className="input-field" name={"name"} onChange={onChangeUserData} maxLength='10' placeholder="이름을 입력해주세요."/>
                     </div>
 
                     {/* 생년월일 */}
-                    <div>
+                    {/*<div>
                         <h5> 생년월일 </h5>
-                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'/> -&nbsp; 
-                        <input type='text' className="input-field3" maxLength='1' name='birth2'/> ******
-                    </div>
+                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'placeholder="생년월일(900101)"/> -&nbsp; 
+                        <input type='text' className="input-field3" maxLength='1' name='birth2'/> ****** 
+                    </div>*/}
 
                     {/* 이메일 */}
                     <div>
                         <h5> 이메일 </h5>
-                        <input type='text' className="input-field2" name={"email"} onChange={onChangeUserData} maxLength='15'/> @&nbsp; 
-                        <select name='register_email_select'>
+                        <input type='text' className="input-field2" name={"email"} onChange={onChangeUserData} maxLength='15'placeholder="이메일 아이디"/> @&nbsp; 
+                       {/* <select name='register_email_select'>
                             <option value='gmail.com'> gmail.com </option>
                             <option value='naver.com'> naver.com </option>
                             <option value='write'> 직접 입력 </option>
-                        </select>
+    </select> */}
 
                         {/* {this.state.email_writer ? <div> <input type='text' name='register_email_write' maxLength='20'/> </div>
                                                  : null} */}
@@ -129,7 +150,7 @@ let Register = () => {
             </div>
 
             <div>
-                <button type="button" id="sbtn">가입하기&nbsp;🎉</button>
+                <button type="button" id="sbtn" onClick={register}>가입하기&nbsp;🎉</button>
             </div>
         </form>
       </div>
