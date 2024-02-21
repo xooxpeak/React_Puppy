@@ -68,7 +68,15 @@ let Register = () => {
         //     alert("모든 항목을 다 작성해주세요.");
         //     return;  // 함수 실행을 중단하고 반환
         // }
-        axios.post('http://localhost:8082/api/v1/auth/n/register', user)
+        console.log(user);
+        axios.post('http://localhost:8082/api/v1/auth/n/register', {
+            userId: user.userId,
+            password: user.password
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then((res) => {
         
             // 회원가입 성공
@@ -77,8 +85,8 @@ let Register = () => {
         })
         .catch((error) => {
             // 회원가입 실패
-            alert("회원가입에 실패했습니다. 다시 확인해주세요.");
-            console.error("Error:", error);
+            //alert("회원가입에 실패했습니다. 다시 확인해주세요.");
+            //console.log("Error:", error);
         });
     }
 
@@ -93,7 +101,7 @@ let Register = () => {
             <div>
                 <Nav/>
             </div>
-          <form className="registerForm">
+          <form className="registerForm" onSubmit={register}>
             <div>
                 <h1 id='register_title'> 회원가입</h1>
             </div>
@@ -125,11 +133,11 @@ let Register = () => {
                     </div>
 
                     {/* 생년월일 */}
-                    {/*<div>
+                    <div>
                         <h5> 생년월일 </h5>
-                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'placeholder="생년월일(900101)"/> -&nbsp; 
-                        <input type='text' className="input-field3" maxLength='1' name='birth2'/> ****** 
-                    </div>*/}
+                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'placeholder="(20000101)"/> {/* -&nbsp; 
+                        <input type='text' className="input-field3" maxLength='1' name='birth2'/> ******  */}
+                    </div>
 
                     {/* 이메일 */}
                     <div>
