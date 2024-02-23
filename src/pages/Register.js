@@ -9,9 +9,9 @@ let Register = () => {
     let [user,setUser] = useState({
         userId : "",
         password : "",
-        password2 : "",
+ //       password2 : "",
         name : "",
- //       birth : "",
+        birth : "",
         email : "",
         addr1 : "",
         addr2 : ""
@@ -68,25 +68,20 @@ let Register = () => {
         //     alert("모든 항목을 다 작성해주세요.");
         //     return;  // 함수 실행을 중단하고 반환
         // }
-        console.log(user);
-        axios.post('http://localhost:8082/api/v1/auth/n/register', {
-            userId: user.userId,
-            password: user.password
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        axios({
+            url:'http://localhost:8082/api/v1/auth/n/register',
+            method: 'POST',
+            data: user
         })
         .then((res) => {
-        
             // 회원가입 성공
             alert("회원가입이 완료되었습니다!");
             console.log("Response:", res.data);
         })
         .catch((error) => {
             // 회원가입 실패
-            //alert("회원가입에 실패했습니다. 다시 확인해주세요.");
-            //console.log("Error:", error);
+            alert("회원가입에 실패했습니다. 다시 확인해주세요.");
+            console.log("Error:", error);
         });
     }
 
@@ -101,7 +96,7 @@ let Register = () => {
             <div>
                 <Nav/>
             </div>
-          <form className="registerForm" onSubmit={register}>
+          <form className="registerForm">
             <div>
                 <h1 id='register_title'> 회원가입</h1>
             </div>
@@ -120,11 +115,11 @@ let Register = () => {
                         <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호를 입력해주세요."/>
                     </div>
 
-                    {/* 비밀번호 확인 */}
+                    {/* 비밀번호 확인
                     <div>
                         <h5> 비밀번호 확인 </h5>
                         <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인을 위해 한번 더 입력해주세요."/>
-                    </div>
+                    </div> */}
                 
                     {/* 이름 */}
                     <div>
