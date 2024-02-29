@@ -44,21 +44,18 @@ let Register = () => {
     // 서버의 응답을 콘솔에 출력
     let dupIdCheck = () => {
         // 입력란이 비어있을 경우의 경고창
-        if(!user.userId){
-            alert("아이디를 입력해주세요.");
-            return;  // 함수 실행을 중단하고 반환
+        if(user.userId !="") {
+            axios.post(`http://localhost:8082/api/v1/auth/n/dupIdCheck?userId=${user.userId}`, {}).then((res) => {
+                // 중복인 경우 (true)
+                console.log(res.data);
+                if (res.data) {
+                    console.log("이미 사용 중인 아이디입니다.")
+                    //document.getElementById("userId").focus();
+                } else {
+                    console.log("사용 가능한 아이디입니다.");
+                }
+            });
         }
-        axios.post(`http://localhost:8082/api/v1/auth/n/dupIdCheck?userId=${user.userId}`, {
-        }).then((res) => {
-            // 중복인 경우 (true)
-            if(res.data) {
-                alert("이미 사용 중인 아이디입니다.");
-                document.getElementById("userId").focus();
-            } else {
-                alert("사용 가능한 아이디입니다.");
-            }
-            console.log(res.data);
-        });
     }
 
     // 회원가입
@@ -75,18 +72,27 @@ let Register = () => {
         })
         .then((res) => {
             // 회원가입 성공
-            alert("회원가입이 완료되었습니다!");
+
             console.log("Response:", res.data);
+            if(res.data.code == "400"){
+                alert("중복된 아이디 입니다.");
+                return;
+            }
+
+            alert("회원가입이 완료되었습니다!");
         })
         .catch((error) => {
             // 회원가입 실패
-            alert("회원가입에 실패했습니다. 다시 확인해주세요.");
+            alert("서버 오류");
             console.log("Error:", error);
         });
     }
 
     // useState 훅으로 관리되는 user 객체의 속성을 업데이트하는 함수
     let onChangeUserData = (e) => {
+        if(e.target.name == "userId"){
+            dupIdCheck();
+        }
         setUser({...user, [e.target.name] : e.target.value})
         console.log(user);
     }
@@ -106,7 +112,6 @@ let Register = () => {
                     <div>
                         <h5> 아이디 </h5>
                         <input type='text' className="input-field" name={"userId"} onChange={onChangeUserData} maxLength='20' placeholder="7자 이상의 문자의 아이디를 입력해주세요." autoFocus/>
-                        <button type="button" id="dupIdCheck" onClick={dupIdCheck}>중복확인</button>
                     </div>
 
                     {/* 비밀번호 */}
