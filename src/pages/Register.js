@@ -58,6 +58,9 @@ let Register = () => {
         }
     }
 
+    // useState 훅을 사용하여 유효성 검사를 위해 추가
+    let [resUserData,setResUserData] = useState([]);
+
     // 회원가입
     let register = () => {
         // 입력란이 비어있을 경우의 경고창
@@ -71,15 +74,22 @@ let Register = () => {
             data: user
         })
         .then((res) => {
-            // 회원가입 성공
-
-            console.log("Response:", res.data);
-            if(res.data.code == "400"){
-                alert("중복된 아이디 입니다.");
-                return;
+        // 회원가입 성공
+            // 유효성 검사 실패 시
+            if(res.data.code == 402){
+                setResUserData(res.data.data);
             }
 
-            alert("회원가입이 완료되었습니다!");
+            // 패스워드 불일치 시
+            if(res.data.code == 401){
+                alert("패스워드가 불일치합니다.")
+            }
+
+            console.log("Response:", res.data);
+        
+            if(res.data.code == 200){
+                alert("회원가입이 완료되었습니다!");
+            }
         })
         .catch((error) => {
             // 회원가입 실패
@@ -112,6 +122,19 @@ let Register = () => {
                     <div>
                         <h5> 아이디 </h5>
                         <input type='text' className="input-field" name={"userId"} onChange={onChangeUserData} maxLength='20' placeholder="7자 이상의 문자의 아이디를 입력해주세요." autoFocus/>
+                        {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "email" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
 
                     {/* 비밀번호 */}
@@ -120,11 +143,11 @@ let Register = () => {
                         <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호를 입력해주세요."/>
                     </div>
 
-                    {/* 비밀번호 확인
+                    {/* 비밀번호 확인 */}
                     <div>
                         <h5> 비밀번호 확인 </h5>
                         <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인을 위해 한번 더 입력해주세요."/>
-                    </div> */}
+                    </div>
                 
                     {/* 이름 */}
                     <div>
