@@ -86,7 +86,8 @@ let Register = () => {
             }
 
             console.log("Response:", res.data);
-        
+            
+            // 회원가입 성공
             if(res.data.code == 200){
                 alert("회원가입이 완료되었습니다!");
             }
@@ -126,7 +127,7 @@ let Register = () => {
                             resUserData.map((data)=>(
                                 <>
                                 {
-                                    "email" === data.field ? (
+                                    "userId" === data.field ? (
                                         <span style={{
                                             color:"red"
                                         }}>{data.defaultMessage}</span>
@@ -141,31 +142,83 @@ let Register = () => {
                     <div>
                         <h5> 비밀번호 </h5>
                         <input type='password' className="input-field" name={"password"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호를 입력해주세요."/>
+                        {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "password" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
 
                     {/* 비밀번호 확인 */}
                     <div>
                         <h5> 비밀번호 확인 </h5>
                         <input type='password' className="input-field" name={"password2"} onChange={onChangeUserData} maxLength='15' placeholder="비밀번호 확인을 위해 한번 더 입력해주세요."/>
+                        {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "password2" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
                 
                     {/* 이름 */}
                     <div>
                         <h5> 이름 </h5>
                         <input type='text' className="input-field" name={"name"} onChange={onChangeUserData} maxLength='10' placeholder="이름을 입력해주세요."/>
+                        {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "name" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
 
                     {/* 생년월일 */}
                     <div>
                         <h5> 생년월일 </h5>
-                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='6'placeholder="(20000101)"/> {/* -&nbsp; 
+                        <input type='text' className="input-field2" name={"birth"} onChange={onChangeUserData} maxLength='8'placeholder="(20000101)"/> {/* -&nbsp; 
                         <input type='text' className="input-field3" maxLength='1' name='birth2'/> ******  */}
+                         {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "birth" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
 
                     {/* 이메일 */}
                     <div>
                         <h5> 이메일 </h5>
-                        <input type='text' className="input-field2" name={"email"} onChange={onChangeUserData} maxLength='15'placeholder="이메일 아이디"/> @&nbsp; 
+                        <input type='text' className="input-field2" name={"email"} onChange={onChangeUserData} maxLength='15'placeholder="이메일 아이디"/> {/*@&nbsp;*/} 
                        {/* <select name='register_email_select'>
                             <option value='gmail.com'> gmail.com </option>
                             <option value='naver.com'> naver.com </option>
@@ -174,6 +227,20 @@ let Register = () => {
 
                         {/* {this.state.email_writer ? <div> <input type='text' name='register_email_write' maxLength='20'/> </div>
                                                  : null} */}
+
+                        {
+                            resUserData.map((data)=>(
+                                <>
+                                {
+                                    "email" === data.field ? (
+                                        <span style={{
+                                            color:"red"
+                                        }}>{data.defaultMessage}</span>
+                                    ):(<></>)
+                                }
+                                </>
+                            ))
+                        }
                     </div>
 
                     {/* 주소 추가해야됨 */}
