@@ -1,10 +1,12 @@
 import './App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './Main';
 import Nav from './components/Nav';
 import PuppyNote from './pages/PuppyNote';
 import Gallery from './pages/Gallery';
 import Board from './pages/Board';
+import BoardView from './pages/BoardView';
 import Follow from './pages/Follow';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -19,6 +21,7 @@ function App() {
             <Route path='/puppyNote' element={<PuppyNote/>}></Route>
             <Route path='/gallery' element={<Gallery/>}></Route>
             <Route path='/board' element={<Board/>}></Route>
+            <Route exact path='/boardView/:no' element={<BoardView/>}></Route>
             <Route path='/follow' element={<Follow/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
 						<Route path='/register' element={<Register/>}></Route>

@@ -1,11 +1,18 @@
 import React from "react";
+import BoardList from "./BoardList";
+import Nav from "../components/Nav";
+import { NavLink } from 'react-router-dom';
 
-class Board extends React.Component {
-    render() {
+const Board = props => {
         return (
-            <h1>Board</h1>
+            <>
+                <div>
+                    <Nav/>
+                </div>
+                {/* <h2 align="center">게시판</h2> */}
+                <BoardList/>
+            </>
         )
     }
-}
 
 export default Board;
