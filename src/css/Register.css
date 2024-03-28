@@ -22,7 +22,7 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 120px; /* Nav 아래 여백 추가 */
+    margin-top: 100px; /* Nav 아래 여백 추가 */
     border: 5px solid rgb(163, 156, 231);
     border-radius: 20px;
     padding: 20px;
@@ -30,7 +30,7 @@ form {
 }
 
 .input-field {
-    width: 70%;
+    width: auto;
     height: 30px;
     border: 1px solid rgb(163, 156, 231);
     border-radius: 5px;
@@ -39,7 +39,7 @@ form {
 }
 
 .input-field2 {
-    width: 40%;
+    width: auto;
     height: 30px;
     border: 1px solid rgb(163, 156, 231);
     border-radius: 5px;
@@ -112,11 +112,19 @@ button {
 #sbtn {
     background-color: rgb(163, 156, 231);
     color : white;
-    width: 400px;
+    width: 370px;
     height:50px;
     font-size: 20px;
     font-weight: bold;
     border : none;
     border-radius: 5px;
     margin : 20px 0 50px 0;
+}
+
+.error-message {
+    color: red;
+}
+
+.register1 {
+    margin-bottom: 5%;
 }
