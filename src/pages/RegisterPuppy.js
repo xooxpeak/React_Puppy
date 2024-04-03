@@ -1,6 +1,6 @@
 import React from "react";
 import '../css/RegisterPuppy.css';
-import Nav from "../components/Nav";
+import Nav2 from "../components/Nav2";
 import { useState } from "react";
 import axios from "axios";
 
@@ -46,12 +46,12 @@ let RegisterPuppy = () => {
     return (
         <div>
             <div>
-                <Nav />
+                <Nav2 />
             </div>
 
             <form className="registerPuppyForm">
                 <div>
-                    <h1 id='registerPuppy_title'> 우리 아이 등록 </h1>
+                    <h2 id='registerPuppy_title'> 우리 아이 등록 </h2>
                 </div>
 
                 {/* 이름 */}
@@ -59,12 +59,12 @@ let RegisterPuppy = () => {
                     <input type='text' className="input-puppy" name={"puppyName"} onChange={onChangePuppyData} placeholder='이름' autoFocus/>
                 </div>
 
-                {/* 성별 -> 추후 체크박스로 변경. */}
+                {/* 성별 -> 추후 라디오버튼으로 변경. */}
                 <div>
                     <input type='text' className="input-puppy" name={"gender"} onChange={onChangePuppyData} placeholder="성별 남or여"/>
                 </div>
 
-                {/* 중성화 여부 -> 추후 체크박스로 변경. */}
+                {/* 중성화 여부 -> 추후 라디오버튼으로 변경. */}
                 <div>
                     <input type='text' className="input-puppy" name={"neutering"} onChange={onChangePuppyData} placeholder="중성화여부"/>
                 </div>
@@ -79,7 +79,7 @@ let RegisterPuppy = () => {
                     <input type='text' className="input-puppy" name={"breed"} onChange={onChangePuppyData} placeholder="종"/>
                 </div>
 
-                {/* 알러지 유무 -> 추후 체크박스로 변경. '유'일 경우 -> 새로운 인풋창 나오게.*/}
+                {/* 알러지 유무 -> 추후 라디오버튼으로 변경. '유'일 경우 -> 새로운 인풋창 나오게.*/}
                 <div>
                     <input type='text' className="input-puppy" name={"allergy"} onChange={onChangePuppyData} placeholder="알러지 유무(유일 경우 자세히 서술해주세요.)"/>
                 </div>
