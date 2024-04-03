@@ -4,6 +4,8 @@ import CommonTable from '../components/table/CommonTable.js';
 import CommonTableColumn from '../components/table/CommonTableColumn.js';
 import CommonTableRow from '../components/table/CommonTableRow.js';
 import { boardList } from '../../src/Data.js';
+import Button from 'react-bootstrap/Button';
+import '../css/Board.css';
 
 const BoardList = props => {
     const [dataList, setDataList] = useState([]);
@@ -33,7 +35,11 @@ const BoardList = props => {
                             // 그렇지 않은 경우에는 빈 문자열('') 반환
             }
         </CommonTable>
+        <div className="button-container">
+            <button className="creat-board-btn">게시글 작성</button>
+        </div>
         </>
+        
     );
 }
 

@@ -1,13 +1,14 @@
 import React from "react";
 import BoardList from "./BoardList";
-import Nav from "../components/Nav";
+import Nav2 from "../components/Nav2";
+import '../css/Board.css';
 import { NavLink } from 'react-router-dom';
 
 const Board = props => {
         return (
             <>
                 <div>
-                    <Nav/>
+                    <Nav2/>
                 </div>
                 {/* <h2 align="center">게시판</h2> */}
                 <BoardList/>
