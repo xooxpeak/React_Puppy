@@ -1,0 +1,34 @@
+.createStoreForm {
+        width: 400px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 3%;
+        align-items: center;
+        position: absolute;
+        border: 5px solid rgb(163, 156, 231);
+}
+
+
+.input-store {
+    width: 300px;
+    height: 30px;
+    border: 1px solid rgb(163, 156, 231);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    margin-top: 8px;
+}
+
+#createStoreBut {
+    background-color: rgb(163, 156, 231);
+    color : white;
+    width: 300px;
+    height:50px;
+    font-size: 20px;
+    font-weight: bold;
+    border : none;
+    border-radius: 5px;
+    margin : 20px 0 50px 0; 
+}
