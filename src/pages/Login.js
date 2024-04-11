@@ -1,23 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import '../css/Login.css';
-import Nav from "../components/Nav";
-import { NavLink } from "react-router-dom";
+import Nav2 from "../components/Nav2";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
 let Login = () => {
+
+        let [cookies, setCookies] = useCookies(['user']);
+
+        // 아이디와 비밀번호
+        let [userId, setUserId] = useState("");
+        let [password, setPassword] = useState("");
+
+        let navigate = useNavigate();   // useNavigate 훅 사용
+
+        let onUserIdHandler = (e) => {
+            setUserId(e.target.value)
+            console.log("userId: ", e.target.value);
+        }
+
+        let onPasswordHandler = (e) => {
+            setPassword(e.target.value)
+            console.log("password: ", e.target.value);
+        }
+
+        // 로그인 함수
+        let loginHandler = () => {
+            // 로그인 요청 보내기
+            axios({
+                url: 'http://localhost:8082/api/v1/auth/n/login',
+                method: 'POST',
+                data: {
+                    userId: userId,
+                    password: password
+                }
+            })
+            .then((res) => {
+                // 로그인 성공
+                console.log(res.data)
+                if (res.status === 200) {
+                    setCookies('user', { userId, password });  // 쿠키에 사용자 정보 저장
+                    alert("로그인 성공!");
+                    navigate("/");  // 메인페이지로 이동
+                    
+                } else {
+                // 로그인 실패
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
+                    
+                }
+            })
+            .catch((error) => {
+                // 서버 오류 또는 네트워크 오류
+                alert("로그인에 실패하였습니다.");
+                console.error("Error:", error);
+            });
+        }
+
         return (
             <div>
                 <div>
-                    <Nav/>
+                    <Nav2/>
                 </div>
-                <form className="loginForm">
+                <div className="loginForm">
                     <div>
                         <h1 id='login_title'>로그인</h1>
                     </div>
                     <div>
                         <div className="input">
-                            <input type="text" className="userId" id="userId" placeholder="아이디" autoFocus></input>
-                            <input type="password" className="password" id="password" placeholder="비밀번호"></input>
-                            <button id="loginBut">Login</button>
+                            <input type="text" className="userId" id="userId" placeholder="아이디" value={userId} onChange={onUserIdHandler} autoFocus></input>
+                            <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
+                            <button onClick={loginHandler}>Login</button>
                         </div>
                         <div className="link">
                             <NavLink to="/findId">아이디 찾기</NavLink>
@@ -27,7 +80,7 @@ let Login = () => {
                             <NavLink to="/register">회원가입</NavLink>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         );
     }
