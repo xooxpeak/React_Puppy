@@ -1,9 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Cookies } from "react-cookie";
+import { useCookies } from "react-cookie";
+import Nav2 from "../components/Nav2";
+import { Container, Form, Button } from "react-bootstrap";
+
 let Gallery = () => {
 
+    let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);
     let [files, setFiles] = useState([]);
 
     let uploadOnChange = (e) => {
@@ -27,7 +31,7 @@ let Gallery = () => {
         axios.post('http://localhost:8082/api/v1/auth/y/createGallery', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'accessToken' : Cookies.accessToken
+              'Authorization' : 'Bearer '+ cookies.accessToken
             }
           })
           .then((res) => {
@@ -38,14 +42,17 @@ let Gallery = () => {
     }
 
 
-        return (
+    return (
         <>
         <div>
             <Nav2/>
         </div>
-            <h1>Gallery</h1>
-            <input type="file" accept="image/*" onChange={uploadOnChange}/>
-            <button label="이미지 업로드" onClick={uploadFiles}>submit</button>
+            <form>
+                {/* 추가된 h1 태그 */}
+                <h4><strong>사진첩 작성</strong></h4>
+                <input type="file" accept="image/*" onChange={uploadOnChange}/>
+                <button label="이미지 업로드" onClick={uploadFiles}>작성하기</button>
+            </form>
         </>
         )
 }
