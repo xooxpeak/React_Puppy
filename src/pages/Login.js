@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 
 let Login = () => {
 
-        let [cookies, setCookies] = useCookies(['user']);
+        let [cookies, setCookies] = useCookies(['accessToken']);
 
         // 아이디와 비밀번호
         let [userId, setUserId] = useState("");
