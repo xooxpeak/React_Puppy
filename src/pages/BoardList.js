@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CommonTable from '../components/table/CommonTable.js';
 import CommonTableColumn from '../components/table/CommonTableColumn.js';
 import CommonTableRow from '../components/table/CommonTableRow.js';
 import { boardList } from '../../src/Data.js';
-import Button from 'react-bootstrap/Button';
 import '../css/Board.css';
 
-const BoardList = props => {
-    const [dataList, setDataList] = useState([]);
+let BoardList = props => {
+    let [dataList, setDataList] = useState([]);
 
     useEffect(() => {
         setDataList(boardList);
     }, [ ])
 
+    let navigate = useNavigate();
+
+    let createBoard = () => {
+        navigate('/createBoard');
+    };
+   
     return(
         <>
-        <CommonTable headersName={['글번호', '제목', '등록일', '작성자', '조회수', '좋아요 수']}>
+        <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>개시판🐶</strong></h3>
+
+        <CommonTable headersName={['글번호', '제목', '등록일', '작성자', '👀조회수', '🖤좋아요']}>
             {
                 dataList ? dataList.map((item, index) => {
                     return (
@@ -36,7 +43,9 @@ const BoardList = props => {
             }
         </CommonTable>
         <div className="button-container">
-            <button className="creat-board-btn">게시글 작성</button>
+            <div className="button-wrapper">
+                <button className="creat-board-btn" onClick={createBoard}>📝글쓰기</button>
+            </div>
         </div>
         </>
         
