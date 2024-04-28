@@ -1,14 +1,45 @@
 
-.board-view-wrapper {
+
+
+  .board-view-title-box {
+    background-color: rgba(201, 128, 225, 0.3); /* 연한 보라색의 네모난 박스의 배경색 */
+    padding: 20px; 
+    border-radius: 10px; /* 둥근 모서리를 위한 경계 반경 */
+    text-align: center; /* 제목을 가운데 정렬 */
+    max-width: 63%; /* 최대 가로 너비 설정 */
+    max-height: auto;
+    margin: 30px auto 0; /* 가운데 정렬 및 상단 마진 추가 */
+    overflow: auto; /* 내용이 넘치는 경우 스크롤 표시 */
+  }
+
+  .board-view-title {
+      font-size: 20px;
+      font-weight: bold;
+  }
+
+  .board-view-wrapper {
     width: 60%;
     margin: 0 auto;
   }
+
   
   .board-view-go-list-btn {
-    border: 0;
+    width: auto; 
+    height: auto;
+    border: none;
     padding: 10px;
-    background-color: #ffd9d9;
-  }
+    background-color: rgb(201, 128, 225);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px; /* 위 여백 조절 */
+    margin-bottom: 20px; /* 아래 여백 조절 */
+    justify-content: center; 
+}
+
+  .board-view-go-list-btn:hover {
+    background-color: #ffb3b3;
+}
   
   .board-view-row {
     margin: 10px 0;
@@ -28,19 +59,29 @@
 
   .button-container {
     display: flex; 
-    justify-content: flex-end; 
-    width: 10%; 
+    justify-content: center; 
     margin-bottom: 20px;
+    margin-top: 50px;
+    max-width: 63;
   }
+
+  .button-wrapper {
+    width: 10%; /* 버튼을 감싸는 요소의 너비를 버튼의 내용에 맞게 조절 */
+    text-align: center; /* 버튼을 가운데 정렬 */
+}
 
   .creat-board-btn {
     background-color: rgb(201, 128, 225);
     color: white;
+    width: auto;
+    height: auto;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
   }
 
   .creat-board-btn:hover {
-    background-color: #ffd9d9;
+    background-color: #ffb3b3;
   }

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getPostByNo } from '../../src/Data.js';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/Board.css'
+import Nav2 from "../components/Nav2.js";
 
-const BoardView = ({ history }) => {
-    const [data, setData] = useState({});
+let BoardView = ({ history }) => {
+    let [data, setData] = useState({});
 
-    const {no} = useParams();
+    let {no} = useParams();
 
     useEffect(() => {
         setData(getPostByNo(no));
@@ -19,7 +20,15 @@ let goBack = () => {
 
     return(
         <>
-            <h2 align="center">게시글 상세정보</h2>
+        <div>
+            <Nav2/>
+        </div>
+        <div className="board-view-title-box">
+            <div className="board-view-title">
+                {data.title}
+            </div>
+        </div>
+
 
             <div className="board-view-wrapper">
                 {
@@ -30,10 +39,6 @@ let goBack = () => {
                                 <label>{data.no}</label>
                             </div>
                             <div className="board-view-row">
-                                <label>제목</label>
-                                <label>{data.title}</label>
-                            </div>
-                            <div className="board-view-row">
                                 <label>작성일</label>
                                 <label>{data.boardDate}</label>
                             </div>
@@ -42,11 +47,11 @@ let goBack = () => {
                                 <label>{data.userId}</label>
                             </div>
                             <div className="board-view-row">
-                                <label>조회수</label>
+                                <label>👀조회수</label>
                                 <label>{data.views}</label>
                             </div>
                             <div className="board-view-row">
-                                <label>좋아요</label>
+                                <label>🖤좋아요</label>
                                 <label>{data.userLike}</label>
                             </div>
                             <div className="board-view-row">
@@ -60,7 +65,10 @@ let goBack = () => {
                         </>
                     ) : '해당 게시글을 찾을 수 없습니다❌'
                 }
-                <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
+            <div className="button-container">
+                <div className="button-wrapper"></div>
+                    <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
+                </div>
             </div>
         </>
     )
