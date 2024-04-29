@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useCookies } from "react-cookie";
 
-function CollapsibleExample() {
+let Nav2 = () => {
 
   let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);  // 쿠키 관리
   let [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -71,4 +71,4 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default Nav2;
