@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Nav2 from "../components/Nav2";
-import { Container, Form, Button } from "react-bootstrap";
 
 let Gallery = () => {
 
@@ -23,7 +22,7 @@ let Gallery = () => {
     
         // append 메서드를 사용하여 FormData에 여러 개의 파일을 추가
         files.map((file) => {
-          formData.append("files", file);
+          formData.append("file", file);
         });
 
         console.log(Array.from(formData));
@@ -41,14 +40,12 @@ let Gallery = () => {
           });
     }
 
-
     return (
         <>
         <div>
             <Nav2/>
         </div>
             <form>
-                {/* 추가된 h1 태그 */}
                 <h4><strong>사진첩 작성</strong></h4>
                 <input type="file" accept="image/*" onChange={uploadOnChange}/>
                 <button label="이미지 업로드" onClick={uploadFiles}>작성하기</button>
