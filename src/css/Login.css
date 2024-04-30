@@ -1,5 +1,12 @@
+@font-face {
+    font-family: 'SUIT-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 * {
-    box-sizing: border-box;
+    /*  box-sizing: border-box; */
     font-family: 'SUIT-Medium';
 }
 
@@ -16,12 +23,17 @@ div h5 {
     justify-content: center;
     margin-top: auto;
     align-items: center;
-    position: absolute;
     border: 5px solid rgb(163, 156, 231);
+    border-radius: 20px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-h1#login_title {
-    margin-bottom: 50px; /* 로그인 글자와 아래 요소 간격 */
+h3#login_title {
+    margin-bottom: 30px; /* 로그인 글자와 아래 요소 간격 */
 }
 
 .input {
@@ -52,6 +64,12 @@ h1#login_title {
 
 #loginBut:hover {
     background-color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .link a {

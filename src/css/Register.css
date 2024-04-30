@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box;
+  /*  box-sizing: border-box; */
     font-family: 'SUIT-Medium';
 }
 
@@ -119,6 +119,10 @@ button {
     border : none;
     border-radius: 5px;
     margin : 20px 0 50px 0;
+}
+
+#sbtn:hover {
+    background-color: #f8d1dd; 
 }
 
 .error-message {
