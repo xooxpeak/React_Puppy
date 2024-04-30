@@ -27,6 +27,13 @@ let Login = () => {
 
         // 로그인 함수
         let loginHandler = () => {
+
+            // 아이디 또는 비밀번호가 비어 있는 경우
+            if (!userId || !password) {
+                alert("아이디와 비밀번호를 모두 입력해주세요.");
+                return;
+            }
+
             // 로그인 요청 보내기
             axios({
                 url: 'http://localhost:8082/api/v1/auth/n/login',
@@ -69,13 +76,14 @@ let Login = () => {
         }
 
         return (
-            <div>
+            <>
                 <div>
                     <Nav2/>
                 </div>
+                
                 <div className="loginForm">
                     <div>
-                        <h1 id='login_title'>로그인</h1>
+                        <h3 id='login_title'>로그인</h3>
                     </div>
                     <div>
                         <div className="input">
@@ -92,7 +100,7 @@ let Login = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 
