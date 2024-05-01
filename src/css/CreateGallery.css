@@ -1,0 +1,50 @@
+
+.button:hover {
+    background-color: #ffb3b3;
+}
+
+/* DatePicker 컨테이너의 스타일 */
+.react-datepicker-wrapper {
+    display: inline-block;
+  }
+  
+  /* DatePicker 입력란의 스타일 */
+  .react-datepicker__input-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* DatePicker 컴포넌트의 스타일 */
+  .react-datepicker {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* 달력의 헤더 스타일 */
+  .react-datepicker__header {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* 이전/다음 달 버튼의 스타일 */
+  .react-datepicker__navigation {
+    background-color: transparent;
+  }
+  
+  /* 달력의 날짜 셀 스타일 */
+  .react-datepicker__day {
+    font-size: 14px;
+  }
+  
+  /* 선택된 날짜의 스타일 */
+  .react-datepicker__day--selected {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* 오늘 날짜의 스타일 */
+  .react-datepicker__day--today {
+    font-weight: bold;
+  }
+  
