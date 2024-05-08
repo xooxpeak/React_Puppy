@@ -12,18 +12,30 @@ let CreateGallery = () => {
     let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);
     let [files, setFiles] = useState([]);
     let [selectedDate, setSelectedDate] = useState(null);
+    let [imagePreview, setImagePreview] = useState(null); // 이미지 미리보기를 위한 상태 변수
 
+    // 파일 선택 시 호출되는 함수
     let uploadOnChange = (e) => {
-        setFiles(Array.from(e.target.files))
+        setFiles(Array.from(e.target.files))  // 선택된 파일 목록을 상태 변수 files에 저장함
+    
+            // 선택된 파일 중 첫 번째 파일의 미리보기를 표시함
+            if (e.target.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setImagePreview(e.target.result);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
     }
 
+    // 날짜 선택 시 호출되는 함수
     let handleDateChange = (date) => {
         setSelectedDate(date);
       };
 
+    // 파일 업로드를 처리하는 함수  
     const uploadFiles = (e) => {
         e.preventDefault();
-        console.log(1);
 
         // FormData 객체 사용 : HTTP 요청에 첨부할 수 있는 키-값 쌍의 컬렉션
         const formData = new FormData();
@@ -65,6 +77,10 @@ let CreateGallery = () => {
                     dateFormat="yyyy-MM-dd"
                     placeholderText="날짜를 선택하세요"
                 />
+                <hr></hr>
+                {/* 이미지 미리보기 */}
+                {imagePreview && <img src={imagePreview} alt="Uploaded" style={{ width: "300px", height: "150px" }} />}
+                <hr></hr>
                 <input type="file" accept="image/*" onChange={uploadOnChange}/>
                 <button label="이미지 업로드" onClick={uploadFiles}>작성하기</button>
             </form>
