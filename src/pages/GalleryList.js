@@ -32,25 +32,27 @@ let GalleryList = (props) => {
     //     fetchData();
     // }, []);
 
-    // requestImage 함수
-    let requestImage = (data1) => {
-        axios({
-            url: `http://localhost:8082/api/v1/auth/y/gallery?id=${data1.id}`,
-            method: 'GET',
-            headers: {
-                'Authorization' : 'Bearer '+ cookies.accessToken
-              }
-        })
-        .then((res) => {
-            return res.data.gallImg
-        })
-        .catch((error) => {
+    // 이미지 URL을 가져오는 requestImage 함수
+    let requestImage = async (data1) => {
+        try {
+            const res = await axios({
+                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${data1.id}`,
+                // params: { userId: userId },
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + cookies.accessToken
+                }
+            });
+            console.log(res.data.gall_img);
+            return res.data.gall_img;
+        } catch (error) {
             console.error("Error:", error);
-        });
+        }
     }
 
     // AxiosInstance 사용 XX
     useEffect(() => {
+        console.log(cookies.accessToken);
         axios({
             url: `http://localhost:8082/api/v1/auth/y/gallery`,
             method: 'GET',
@@ -83,7 +85,7 @@ let GalleryList = (props) => {
     // 사진첩 삭제
     let deleteGallery = (id) => {
         axios({
-            url: `http://localhost:8082/api/v1/auth/y/gallery/${id}`,
+            url: `http://localhost:8082/api/v1/auth/y/gallery?id=${id}`,
             method: 'DELETE',
             headers: {
                 'Authorization' : 'Bearer '+ cookies.accessToken
@@ -148,7 +150,7 @@ let GalleryList = (props) => {
                         {dataList.slice(0, 9).map((data, index) => (
                             <div key={index} className="col-md-4">
                                 <div className="card" style={{ width: '18rem', marginBottom: '20px' }}>
-                                    <img className="card-img-top" src={requestImage(data)} alt="Gallery Image"/>
+                                    <img className="card-img-top" src={requestImage(data.gall_img)} alt="Gallery Image"/>
                                     <div className="card-body">
                                         <h5 className="card-title">{`${data.gall_date}`}</h5>
                                         <p className="card-text">{`${data.fileName}`}</p>
