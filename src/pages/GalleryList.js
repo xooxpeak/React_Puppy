@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
@@ -33,22 +33,22 @@ let GalleryList = (props) => {
     // }, []);
 
     // 이미지 URL을 가져오는 requestImage 함수
-    let requestImage = async (data1) => {
+    let requestImage = async (imageId) => {
         try {
             const res = await axios({
-                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${data1.id}`,
-                // params: { userId: userId },
+                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${imageId}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + cookies.accessToken
-                }
+                },
             });
-            console.log(res.data.gall_img);
-            return res.data.gall_img;
+            
+            return res.data;  // 이미지 URL을 반환
         } catch (error) {
             console.error("Error:", error);
         }
     }
+    
 
     // AxiosInstance 사용 XX
     useEffect(() => {
@@ -65,6 +65,10 @@ let GalleryList = (props) => {
             if (res.status === 200) {
                     console.log("이미지 불러오기 성공")
                     setDataList(res.data); // 응답 데이터 설정
+                    // .then(images => {
+                    //     // 이미지 데이터를 각각의 항목에 할당하여 상태 업데이트
+                    //     setDataList(res.data.map((item, index) => ({ ...item, image: images[index] })));
+                    // })
             }
         })
         .catch((error) => {
@@ -73,9 +77,9 @@ let GalleryList = (props) => {
         });
     }, []); // 의존성 배열을 빈 배열로 전달하여 최초 렌더링 시에만 실행되도록 설정
 
-    useEffect(() => {
-        console.log(dataList)
-    }, [dataList])
+    // useEffect(() => {
+    //     console.log(dataList)
+    // }, [dataList])
 
     let createGallery = () => {
         navigate('/createGallery');
@@ -150,11 +154,12 @@ let GalleryList = (props) => {
                         {dataList.slice(0, 9).map((data, index) => (
                             <div key={index} className="col-md-4">
                                 <div className="card" style={{ width: '18rem', marginBottom: '20px' }}>
-                                    <img className="card-img-top" src={requestImage(data.gall_img)} alt="Gallery Image"/>
+                                    <img className="card-img-top" src={requestImage(data.id)} alt="Gallery Image"/>
                                     <div className="card-body">
                                         <h5 className="card-title">{`${data.gall_date}`}</h5>
                                         <p className="card-text">{`${data.fileName}`}</p>
-                                        <a href={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</a>
+                                        {/* <a href={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</a> */}
+                                        <Link to={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</Link>
                                         <button onClick={() => deleteGallery(data.id)} className="btn btn-danger">삭제하기</button>
                                     </div>
                                 </div>
