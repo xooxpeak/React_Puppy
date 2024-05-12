@@ -6,7 +6,9 @@ import axios from "axios";
 import Main from './Main';
 // import Nav from './components/Nav';
 import PuppyNote from './pages/PuppyNote';
+import CreateGallery from './pages/CreateGallery';
 import Gallery from './pages/Gallery';
+import GalleryView from './pages/GalleryView';
 import Board from './pages/Board';
 import BoardView from './pages/BoardView';
 import CreatBoard from './pages/CreateBoard';
@@ -28,6 +30,8 @@ function App() {
             <Route path='/' element={<Main/>} />
               <Route path='/puppyNote' element={<PuppyNote/>}></Route>
               <Route path='/gallery' element={<Gallery/>}></Route>
+              <Route exact path='/galleryView/:id' element={<GalleryView/>}></Route>
+              <Route path='/createGallery' element={<CreateGallery/>}></Route>
               <Route path='/board' element={<Board/>}></Route>
               <Route exact path='/boardView/:no' element={<BoardView/>}></Route>
               <Route path='/createBoard' element={<CreatBoard/>}></Route>
