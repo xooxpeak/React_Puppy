@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Nav2 from '../components/Nav2';
-import '../css/PuppyNote.css'; 
+import '../css/Note.css'; 
 
-let CreatePuppyNote = () => {
+let Note = () => {
 
   let [note, setNote] = useState({
     meal: '',
@@ -32,7 +32,6 @@ let CreatePuppyNote = () => {
   let handleSubmit = (e) => {
     e.preventDefault();
     console.log('Submitted Note:', note);
-    // 여기에 제출된 노트를 처리하는 코드를 추가할 수 있습니다.
   };
 
   return (
@@ -88,4 +87,4 @@ let CreatePuppyNote = () => {
   );
 };
 
-export default CreatePuppyNote;
+export default Note;

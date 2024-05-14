@@ -5,8 +5,8 @@ import { CookiesProvider } from 'react-cookie';
 import axios from "axios";
 import Main from './Main';
 // import Nav from './components/Nav';
-import CreatePuppyNote from './pages/CreatePuppyNote';
-import PuppyNote from './pages/PuppyNote';
+import CreateNote from './pages/CreateNote';
+import Note from './pages/Note';
 import CreateGallery from './pages/CreateGallery';
 import Gallery from './pages/Gallery';
 import GalleryView from './pages/GalleryView';
@@ -29,14 +29,14 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Main/>} />
-              <Route path='/puppyNote' element={<PuppyNote/>}></Route>
+              <Route path='/note' element={<Note/>}></Route>
               <Route path='/gallery' element={<Gallery/>}></Route>
               <Route exact path='/galleryView/:id' element={<GalleryView/>}></Route>
               <Route path='/createGallery' element={<CreateGallery/>}></Route>
               <Route path='/board' element={<Board/>}></Route>
               <Route exact path='/boardView/:no' element={<BoardView/>}></Route>
               <Route path='/createBoard' element={<CreatBoard/>}></Route>
-              <Route path='/createPuppyNote' element={<CreatePuppyNote/>}></Route>
+              <Route path='/createNote' element={<CreateNote/>}></Route>
               <Route path='/follow' element={<Follow/>}></Route>
               <Route path='/login' element={<Login/>}></Route>
               <Route path='/register' element={<Register/>}></Route>
