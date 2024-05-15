@@ -46,14 +46,20 @@ let GalleryView = () => {
 
     useEffect(() => {
         // id를 사용하여 이미지의 상세 정보를 가져오는 API 호출
-        axios.get(`http://localhost:8082/api/v1/auth/y/galleryView?id=${id}`)
+        axios.get(`http://localhost:8082/api/v1/auth/y/galleryView?id=${id}`, {
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`
+            }
+        })
             .then((response) => {
                 setImageData(response.data); // 응답 데이터 설정
                 console.log(response.data);
                 console.log(imageData);
             })
             .catch((error) => {
+                console.log("1");
                 console.error("Error:", error);
+
                 alert("이미지 상세 정보 불러오기 실패");
             });
     }, [id]); // 의존성 배열에 id를 포함하여 id가 변경될 때마다 useEffect가 실행되도록 설정
