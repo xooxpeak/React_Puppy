@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/CreatBoard.css';
 import Nav2 from "../components/Nav2";
+import { Container, Form, Button, InputGroup, FormControl } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 let CreatBoard = () => {
   // 게시글 작성에 필요한 상태 변수들
@@ -12,26 +14,23 @@ let CreatBoard = () => {
   let handleSubmit = async (e) => {
     e.preventDefault(); // 폼의 기본 동작 방지
 
-    // try {
-    //   // 서버에 게시글 작성 요청 보내기
-    //   let response = await axios.post('http://example.com/api/posts', {
-    //     title,
-    //     content
-    //   });
-
     axios({
-        url: 'http://localhost:8082/api/v1/auth/y//createBoard',
+        url: 'http://localhost:8082/api/v1/auth/n/createBoard',
         method: 'POST',
         data: {
-            title: setTitle,
-            content: setContent
+            title: title,
+            content: content
         }
     })
     .then((res) => {
       // 성공
       alert('게시글이 성공적으로 작성되었습니다!');
+      console.log('게시글 제목:', title);
+      console.log('게시글 내용:', content);
+      setTitle(res.title);
+      setContent(res.content);
 
-      // 입력 필드 초기화
+      // 게시글 작성 후 입력 필드 초기화
       setTitle('');
       setContent('');
 
@@ -43,38 +42,50 @@ let CreatBoard = () => {
   };
 
   return (
-    <div>
+    <>
         <div>
-            <Nav2/>
+          <Nav2/>
         </div>
-        <div className="createBoardForm">
-            <div>
-                <h1 id='createBoard_title'>게시글 작성</h1>
-            </div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">제목:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+        <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>📝글쓰기</strong></h3>
+
+        <div className="board-form-container">
+        <form className="board-form" onSubmit={handleSubmit}>
+        <div className="form-group mb-3">
+          <div className="input-group flex-nowrap input-group-lg">
+            <span className="input-group-text" id="addon-wrapping">제목</span>
+            <input
+              type="text"
+              className="form-control"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="content">내용:</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
+        <div className="form-group mb-3">
+          <div className="input-group input-group-lg">
+            <span className="input-group-text">내용</span>
+            <textarea
+              className="form-control"
+              rows="3"
+              name="mainText"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              style={{ resize: 'none', fontSize: '15px' }}
+              required
+            />
+          </div>
         </div>
-        <button type="submit">작성하기</button>
+        <div className="form-group d-grid gap-2 d-md-flex justify-content-md-end">
+          <div>
+            <button type="submit" className="btn btn-primary">저장하기</button>
+            <button type="button" className="btn btn-secondary" onClick={() => window.location.href = '/Board'}>목록</button>
+          </div>
+        </div>
       </form>
     </div>
-    </div>
+    </>
   );
 };
 
