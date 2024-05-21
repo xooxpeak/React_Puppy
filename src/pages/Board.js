@@ -10,7 +10,6 @@ const Board = props => {
                 <div>
                     <Nav2/>
                 </div>
-                {/* <h2 align="center">게시판</h2> */}
                 <BoardList/>
             </>
         )
