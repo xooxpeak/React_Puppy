@@ -19,7 +19,7 @@ let CreatBoard = () => {
         method: 'POST',
         data: {
             title: title,
-            content: content
+            content: content,
         }
     })
     .then((res) => {

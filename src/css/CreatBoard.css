@@ -11,10 +11,21 @@
   font-family: 'SUIT-Medium';
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .board-form-container {
-  width: 100%;
+  /* width: 100%;
   margin-top: 10%;
-  position: relative;
+  position: relative; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh; /* 전체 화면 높이를 사용하여 중앙 배치 */
+  padding: 20px; /* 작은 화면에서도 여백이 있도록 패딩 추가 */
 }
 
 .board-form {
@@ -29,6 +40,7 @@
   border: 5px solid rgb(163, 156, 231);
   border-radius: 20px;
   padding: 20px;
+  box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
   /* position: absolute; */
   /* top: 50%;
   left: 50%;
@@ -49,18 +61,21 @@
 
 textarea {
   /* font-family: 'SUIT-Medium'; */
-  width: 700px;
+  width: 100%;
   height: 300px;
 }
 
 .input-group {
   width: 800px;
+  max-width: 800px;
+  height: 100%;
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  width: 100%;
 }
 
 .saveBtn,
@@ -88,6 +103,14 @@ textarea {
   background-color: #f8d1dd; 
 }
 
-/* span {
-  font-family: 'SUIT-Medium';
-} */
+/* 미디어 쿼리 */
+@media (max-width: 768px) {
+  h3 {
+    font-size: 1.5em;
+  }
+
+  .board-form {
+    padding: 10px;
+  }
+
+}
