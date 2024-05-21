@@ -78,9 +78,9 @@ let CreatBoard = () => {
           </div>
         </div>
         <div className="form-group d-grid gap-2 d-md-flex justify-content-md-end">
-          <div>
-            <button type="submit" className="btn btn-primary">저장하기</button>
-            <button type="button" className="btn btn-secondary" onClick={() => window.location.href = '/Board'}>목록</button>
+          <div className="form-group button-group">
+            <button type="submit" className="saveBtn">등록하기</button>
+            <button type="button" className="listBtn" onClick={() => window.location.href = '/Board'}>목록보기</button>
           </div>
         </div>
       </form>

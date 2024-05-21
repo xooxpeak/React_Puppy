@@ -18,7 +18,7 @@
 }
 
 .board-form {
-  width: 800px;
+  width: auto;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,38 @@ textarea {
 }
 
 .input-group {
-  width: 700px;
+  width: 800px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.saveBtn,
+.listBtn {
+  padding: 10px 20px;
+  width: 100px; /* 버튼 너비 설정 */
+  text-align: center; /* 중앙 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveBtn {
+  background-color: rgb(163, 156, 231);
+}
+
+.listBtn {
+  background-color: white;
+  color: rgb(163, 156, 231);
+  border: 1px solid rgb(163, 156, 231);
+  font-weight: bold;
+}
+
+.listBtn:hover {
+  background-color: #f8d1dd; 
 }
 
 /* span {
