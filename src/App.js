@@ -34,7 +34,7 @@ function App() {
               <Route exact path='/galleryView/:id' element={<GalleryView/>}></Route>
               <Route path='/createGallery' element={<CreateGallery/>}></Route>
               <Route path='/board' element={<Board/>}></Route>
-              <Route exact path='/boardView/:no' element={<BoardView/>}></Route>
+              <Route exact path='/boardView/:id' element={<BoardView/>}></Route>
               <Route path='/createBoard' element={<CreatBoard/>}></Route>
               <Route path='/createNote' element={<CreateNote/>}></Route>
               <Route path='/follow' element={<Follow/>}></Route>
