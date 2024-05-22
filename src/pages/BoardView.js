@@ -15,6 +15,8 @@ let BoardView = () => {
         .then((res) => {
             console.log("게시글 상세 조회 성공!");
             console.log(res.data);
+            const selectedBoard = res.data.find(item => item.id == id); // ID에 해당하는 글 찾기
+            console.log(selectedBoard);
             setBoard(selectedBoard);
         })
         .catch((error) => {
