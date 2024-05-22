@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/CreatBoard.css';
 import Nav2 from "../components/Nav2";
+import { useCookies } from "react-cookie";
 import { Container, Form, Button, InputGroup, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 let CreatBoard = () => {
+
+  let [cookies] = useCookies(['accessToken']);
+
   // 게시글 작성에 필요한 상태 변수들
   let [title, setTitle] = useState('');
   let [content, setContent] = useState('');
@@ -20,6 +24,9 @@ let CreatBoard = () => {
         data: {
             title: title,
             content: content,
+        },
+        headers: {
+          'Authorization' : 'Bearer '+ cookies.accessToken
         }
     })
     .then((res) => {
