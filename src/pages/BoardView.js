@@ -13,34 +13,56 @@ let BoardView = () => {
     let navigate = useNavigate();
 
     // 특정 게시글의 상세 정보를 불러오는 API 호출
+    // Promise를 사용하는 방식
+    // useEffect(() => {
+    //     axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + cookies.accessToken
+    //         }
+    //     })
+    //     .then((res) => {
+    //         // console.log("게시글 상세 조회 성공!");
+    //         // console.log(res.data);
+    //         // const selectedBoard = res.data.find(item => item.id == id); // ID에 해당하는 글 찾기
+    //         // console.log(selectedBoard);
+    //         // setBoard(selectedBoard);
+
+    //         // //TODO: isAuthor = false 이슈 해결
+    //         // console.log(res.data.isAuthor);
+    //         // setIsAuthor(res.data.isAuthor);
+
+    //         console.log("게시글 상세 조회 성공!");
+    //         console.log(res.data);
+    //         const selectedBoard = res.data.boardDetail; // API 응답 구조에 따라 수정
+    //         setBoard(res.data);
+    //         console.log(res.data.isAuthor);
+    //         setIsAuthor(res.data.isAuthor); // isAuthor 값 설정
+    //     })
+    //     .catch((error) => {
+    //         console.log("Error:", error);
+    //     });
+    // }, [id, cookies.accessToken]);
+
+
+    // async/await를 사용하는 방식
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
-            headers: {
-                'Authorization': 'Bearer ' + cookies.accessToken
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + cookies.accessToken
+                    }
+                });
+                const { data } = response;  // axios로부터 받은 응답(response)객체에서 data 속성을 추출하여 data에 할당
+                console.log(data.board);
+                console.log(data.isAuthor);
+                setBoard(data.board);  // 상태 갱신
+                setIsAuthor(data.isAuthor);  // 상태 갱신
+            } catch (error) {
+                console.error("Error:", error);
             }
-        })
-        .then((res) => {
-            // console.log("게시글 상세 조회 성공!");
-            // console.log(res.data);
-            // const selectedBoard = res.data.find(item => item.id == id); // ID에 해당하는 글 찾기
-            // console.log(selectedBoard);
-            // setBoard(selectedBoard);
-
-            // //TODO: isAuthor = false 이슈 해결
-            // console.log(res.data.isAuthor);
-            // setIsAuthor(res.data.isAuthor);
-            console.log("게시글 상세 조회 성공!");
-            console.log(res.data);
-            const selectedBoard = res.data.boardDetail; // API 응답 구조에 따라 수정
-            console.log(selectedBoard);
-            setBoard(selectedBoard);
-            setIsAuthor(res.data.isAuthor); // isAuthor 값 설정
-
-
-        })
-        .catch((error) => {
-            console.log("Error:", error);
-        });
+        };
+        fetchData();
     }, [id, cookies.accessToken]);
 
     // 이전 페이지로 돌아가기
@@ -56,7 +78,7 @@ let BoardView = () => {
 
     // 게시글 삭제
     let del = () => {
-        axios.delete(`http://localhost:8082/api/v1/auth/n/boardDetail?id=${id}`)
+        axios.delete(`http://localhost:8082/api/v1/auth/n/board?id=${id}`)
             .then(() => {
                 console.log("게시글 삭제 성공!");
                 alert("게시글을 삭제하였습니다 🗑️")
