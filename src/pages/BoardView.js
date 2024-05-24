@@ -44,8 +44,24 @@ let BoardView = () => {
     // }, [id, cookies.accessToken]);
 
 
+    //     // 로그인 되지 않았을 경우
+    // if (!cookies.accessToken) {
+    //     alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+    //     navigate("/login");
+    //     return null;
+    // }
+
+
     // async/await를 사용하는 방식
     useEffect(() => {
+        // 로그인 되지 않았을 경우
+        if (!cookies.accessToken) {
+            alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+            navigate("/login"); // 로그인 페이지로 이동
+            return; // 클린업 함수가 필요하지 않으므로 undefined 반환
+        }
+
+        // 로그인이 되어 있을 때 게시글 상세 정보를 불러오는 API 호출
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
@@ -63,7 +79,14 @@ let BoardView = () => {
             }
         };
         fetchData();
-    }, [id, cookies.accessToken]);
+
+        // 클린업 함수를 반환
+        return () => {
+        };
+    }, [id, cookies.accessToken, navigate]);
+
+
+
 
     // 이전 페이지로 돌아가기
     let goBack = () => {
@@ -130,6 +153,7 @@ let BoardView = () => {
                                 <label>내용</label>
                                 <div>
                                     {board.content}
+                                    {/* <img src={board.content} alt="게시글 이미지" /> */}
                                 </div>
                             </div>
 
