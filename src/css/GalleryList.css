@@ -1,0 +1,78 @@
+/* GalleryList.css */
+h3 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.card {
+    width: 18rem;
+    height: 21rem;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.card-img-top {
+    max-width: 100%;
+    max-height: 12rem;
+    height: auto;
+}
+
+.card-body {
+    text-align: center;
+    height: 10rem; 
+    overflow: hidden;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-wrapper {
+    display: inline-block;
+    align-items: center;
+}
+
+.button-group {
+    text-align: center;
+}
+
+.btn-primary,
+.btn-danger {
+    width: auto;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    width: auto;
+    height: auto;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}

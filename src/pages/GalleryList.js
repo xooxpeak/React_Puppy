@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useCookies } from "react-cookie";
 import AxiosInstance from "../api/AxiosInstance";
+import '../css/GalleryList.css'
 
 let GalleryList = (props) => {
 
-    let [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
+    let [cookies] = useCookies(['accessToken']);
     let [dataList, setDataList] = useState([]);
+    let [imageMap, setImageMap] = useState({}); // 이미지 데이터를 저장할 상태 변수
     let navigate = useNavigate();
 
     // AxiosInstance 사용 => default.get is not a function 오류
@@ -32,27 +34,9 @@ let GalleryList = (props) => {
     //     fetchData();
     // }, []);
 
-    // 이미지 URL을 가져오는 requestImage 함수
-    let requestImage = async (imageId) => {
-        try {
-            const res = await axios({
-                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${imageId}`,
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + cookies.accessToken
-                },
-            });
-            
-            return res.data;  // 이미지 URL을 반환
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    }
-    
 
     // AxiosInstance 사용 XX
     useEffect(() => {
-        console.log(cookies.accessToken);
         axios({
             url: `http://localhost:8082/api/v1/auth/y/gallery`,
             method: 'GET',
@@ -63,12 +47,14 @@ let GalleryList = (props) => {
         .then((res) => {
             console.log(res.data)
             if (res.status === 200) {
-                    console.log("이미지 불러오기 성공")
-                    setDataList(res.data); // 응답 데이터 설정
-                    // .then(images => {
-                    //     // 이미지 데이터를 각각의 항목에 할당하여 상태 업데이트
-                    //     setDataList(res.data.map((item, index) => ({ ...item, image: images[index] })));
-                    // })
+                console.log("이미지 불러오기 성공")
+                setDataList(res.data); // 응답 데이터 설정
+                // 각 이미지 데이터를 요청하여 상태로 저장
+                res.data.forEach(data => {
+                    requestImage(data.id).then(imageSrc => {
+                        setImageMap(prevState => ({ ...prevState, [data.id]: imageSrc }));
+                    });
+                });
             }
         })
         .catch((error) => {
@@ -77,10 +63,30 @@ let GalleryList = (props) => {
         });
     }, []); // 의존성 배열을 빈 배열로 전달하여 최초 렌더링 시에만 실행되도록 설정
 
-    // useEffect(() => {
-    //     console.log(dataList)
-    // }, [dataList])
 
+    // 이미지 URL을 가져오는 requestImage 함수
+    let requestImage = async (imageId) => {
+        try {
+            const res = await axios({
+                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${imageId}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + cookies.accessToken
+                },
+                responseType: 'arraybuffer'  // 바이트 배열로 응답 받기
+            });
+            
+            const base64 = btoa(
+                new Uint8Array(res.data)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            const contentType = res.headers['content-type'];
+            return `data:${contentType};base64,${base64}`;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+    
     let createGallery = () => {
         navigate('/createGallery');
     };
@@ -98,8 +104,8 @@ let GalleryList = (props) => {
         .then((res) => {
             console.log("갤러리 삭제 성공");
             alert("해당 사진을 삭제하였습니다.")
-            // 삭제 후 남은 갤러리 목록을 다시 불러옴
             // fetchData();
+            // 갤러리 목록 갱신
             setDataList(res.data); // 응답 데이터 설정
         })
         .catch((error) => {
@@ -147,20 +153,26 @@ let GalleryList = (props) => {
     // 부트스트랩 사용 xx
     return (
         <>
-            <h3 style={{textAlign: 'center', marginTop: '20px'}}>📷사진첩</h3>
+            <h3>📷사진첩</h3>
             <div className="container">
                 {dataList.length > 0 ? (
                     <div className="row justify-content-center">
                         {dataList.slice(0, 9).map((data, index) => (
                             <div key={index} className="col-md-4">
-                                <div className="card" style={{ width: '18rem', marginBottom: '20px' }}>
-                                    <img className="card-img-top" src={requestImage(data.id)} alt="Gallery Image"/>
+                                <div className="card">
+                                    {imageMap[data.id] ? (
+                                        <img className="card-img-top" src={imageMap[data.id]} alt="Gallery Image"/>
+                                    ) : (
+                                        <div>Loading...</div>
+                                    )}
                                     <div className="card-body">
                                         <h5 className="card-title">{`${data.gall_date}`}</h5>
-                                        <p className="card-text">{`${data.fileName}`}</p>
-                                        {/* <a href={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</a> */}
-                                        <Link to={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</Link>
-                                        <button onClick={() => deleteGallery(data.id)} className="btn btn-danger">삭제하기</button>
+                                        <p className="card-text">{`${data.id}`}</p>
+                                        
+                                        <div className="button-group">
+                                            <Link to={`/galleryView/${data.id}`} className="btn btn-primary">상세보기</Link>
+                                            <button onClick={() => deleteGallery(data.id)} className="btn btn-danger">삭제하기</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
