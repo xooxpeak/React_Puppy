@@ -100,23 +100,28 @@ let BoardView = () => {
     };
 
     // 게시글 삭제
-    let del = () => {
-        axios.delete(`http://localhost:8082/api/v1/auth/n/board?id=${id}`)
-            .then(() => {
-                console.log("게시글 삭제 성공!");
-                alert("게시글을 삭제하였습니다 🗑️")
-                navigate("/board");   // 삭제 후 게시글 목록으로 이동
-            })
-            .catch((error) => {
-                console.log("Error: ", error);
-            });
-    };
+    // let del = () => {
+    //     axios.delete(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + cookies.accessToken
+    //                 }
+    //         })
+    //         .then(() => {
+    //             console.log("게시글 삭제 성공!");
+    //             alert("게시글을 삭제하였습니다 🗑️")
+    //             navigate("/board");   // 삭제 후 게시글 목록으로 이동
+    //         })
+    //         .catch((error) => {
+    //             console.log("Error: ", error);
+    //         });
+    // };
 
     return(
         <>
         <div>
             <Nav2/>
         </div>
+        {/* <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>개시판🐶</strong></h3> */}
         <div className="board-view-title-box">
             <div className="board-view-title">
                 {/* {board.title} */}
@@ -159,17 +164,18 @@ let BoardView = () => {
 
                             {/* 작성자인 경우에만 수정 및 삭제 버튼 표시 */}
                             {isAuthor && (
-                                <div className="button-container">
+                                <div className="edit-del-button-container">
                                     <button className="board-view-edit-btn" onClick={edit}>수정</button>
+                                    <span className="button-gap"></span>
                                     <button className="board-view-delete-btn" onClick={del}>삭제</button>
                                 </div>
                             )}
                         </>
                     ) : '해당 게시글을 찾을 수 없습니다❌'
                 }
-            <div className="button-container">
-                <div className="button-wrapper"></div>
-                    <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
+                <div className="button-container">
+                    {/* <div className="button-wrapper"></div> */}
+                        <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
                 </div>
             </div>
         </>

@@ -93,3 +93,34 @@
   .creat-board-btn:hover {
     background-color: #ffb3b3;
   }
+
+  .edit-del-button-container {
+    display: flex; 
+    justify-content: center; 
+    margin-top: 50px;
+  }
+
+  .board-view-edit-btn {
+    width: 100px;
+    height: auto;
+  }
+
+  .board-view-edit-btn:hover {
+    background-color: #ffb3b3;
+  }
+
+  .board-view-delete-btn {
+    width: 100px;
+    height: auto;
+    background-color: white;
+    color: rgb(163, 156, 231);
+    border: 1px solid rgb(163, 156, 231);
+  }
+
+  .board-view-delete-btn:hover {
+    background-color: #ffb3b3;
+  }
+
+  .button-gap {
+    margin-right: 10px; 
+}
