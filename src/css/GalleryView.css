@@ -1,0 +1,38 @@
+.gallery-title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.gallery-container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    min-height: calc(100vh - 60px);
+}
+
+.gallery-content {
+    text-align: center;
+}
+
+.gallery-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 70vh;
+}
+
+.back-button {
+    background-color: rgb(163, 156, 231);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: auto;
+    height: auto;
+}
+
+.back-button:hover {
+    background-color: #f8d1dd;
+}

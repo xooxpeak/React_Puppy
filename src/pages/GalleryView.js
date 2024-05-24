@@ -5,9 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Card } from 'react-bootstrap';
 import { useCookies } from "react-cookie";
 import Nav2 from "../components/Nav2";
+import '../css/GalleryView.css';
 
 let GalleryView = () => {
-    let [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
+    let [cookies] = useCookies(['accessToken']);
     let { id } = useParams(); // URL에서 id 파라미터를 가져옴
     let [imageSrc, setImageSrc] = useState(''); // Base64 인코딩된 이미지 데이터 상태 변수
     let [imageData, setImageData] = useState(null); // 이미지 메타 데이터 상태 변수
@@ -48,39 +49,20 @@ let GalleryView = () => {
         return <div>Loading...</div>;
     }
 
-    // 이미지 상세 정보를 보여주는 컴포넌트 반환
-    // return (
-    //     <>
-    //     <h3 style={{textAlign: 'center', marginTop: '20px'}}>📷사진첩 상세보기</h3>
-    //     <div className="container">
-    //         <Card style={{ width: '18rem', margin: '20px auto' }}>
-    //             <Card.Img variant="top" src={imageData.gall_img} alt="Gallery Image" />
-    //             <Card.Body>
-    //                 <Card.Title>{imageData.gall_date}</Card.Title>
-    //                 <Card.Text>
-    //                     {imageData.fileName}
-    //                 </Card.Text>
-    //                 {/* 상세보기 페이지에서 뒤로 가기 버튼 */}
-    //                 <Button variant="primary" onClick={() => window.history.back()}>뒤로 가기</Button>
-    //             </Card.Body>
-    //         </Card>
-    //     </div>
-    //     </>
-    // );
     return (
         <>
         <div>
             <Nav2 />
         </div>
-            <h3 style={{textAlign: 'center', marginTop: '20px'}}>📷사진첩 상세보기</h3>
-            <div className="container"  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 'calc(100vh - 60px)' }}>
-                <div style={{ textAlign: 'center' }}>
-                    <img src={imageSrc} alt="Gallery Image"  style={{ maxWidth: '100%', height: 'auto', maxHeight: '70vh' }}/>
+            <h3>📷사진첩 상세보기</h3>
+            <div className="gallery-container">
+                <div className="gallery-content">
+                    <img src={imageSrc} alt="Gallery Image" className="gallery-image"/>
                     <div>
                         <h4>{imageData.gall_date}</h4>
                         <p>{imageData.fileName}</p>
                         {/* 상세보기 페이지에서 뒤로 가기 버튼 */}
-                        <button onClick={() => window.history.back()}>뒤로 가기</button>
+                        <button className="back-button" onClick={() => window.history.back()}>뒤로 가기</button>
                     </div>
                 </div>
             </div>
