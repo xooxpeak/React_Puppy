@@ -86,12 +86,11 @@ let BoardView = () => {
     }, [id, cookies.accessToken, navigate]);
 
 
-
-
     // 이전 페이지로 돌아가기
     let goBack = () => {
         navigate(-1);
     };    
+
 
     // 게시글 수정 페이지로 이동
     let edit = () => {
@@ -99,22 +98,23 @@ let BoardView = () => {
         navigate(`/edit?id=${id}`)
     };
 
+
     // 게시글 삭제
-    // let del = () => {
-    //     axios.delete(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
-    //         headers: {
-    //             'Authorization': 'Bearer ' + cookies.accessToken
-    //                 }
-    //         })
-    //         .then(() => {
-    //             console.log("게시글 삭제 성공!");
-    //             alert("게시글을 삭제하였습니다 🗑️")
-    //             navigate("/board");   // 삭제 후 게시글 목록으로 이동
-    //         })
-    //         .catch((error) => {
-    //             console.log("Error: ", error);
-    //         });
-    // };
+    let del = () => {
+        axios.delete(`http://localhost:8082/api/v1/auth/n/deleteBoard?id=${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + cookies.accessToken
+                    }
+            })
+            .then(() => {
+                console.log("게시글 삭제 성공!");
+                alert("게시글을 삭제하였습니다 🗑️")
+                navigate("/board");   // 삭제 후 게시글 목록으로 이동
+            })
+            .catch((error) => {
+                console.log("Error: ", error);
+            });
+    };
 
     return(
         <>
