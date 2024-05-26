@@ -93,9 +93,9 @@ let BoardView = () => {
 
 
     // 게시글 수정 페이지로 이동
-    let edit = () => {
-        // navigate(`/edit/${id}`); 
-        navigate(`/edit?id=${id}`)
+    let edit = (id) => {
+        console.log(id);
+        navigate(`/editBoard/${id}`);
     };
 
 
@@ -165,7 +165,7 @@ let BoardView = () => {
                             {/* 작성자인 경우에만 수정 및 삭제 버튼 표시 */}
                             {isAuthor && (
                                 <div className="edit-del-button-container">
-                                    <button className="board-view-edit-btn" onClick={edit}>수정</button>
+                                    <button className="board-view-edit-btn" onClick={() => edit(board.id)}>수정</button>
                                     <span className="button-gap"></span>
                                     <button className="board-view-delete-btn" onClick={del}>삭제</button>
                                 </div>

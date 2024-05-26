@@ -13,6 +13,7 @@ import GalleryView from './pages/GalleryView';
 import Board from './pages/Board';
 import BoardView from './pages/BoardView';
 import CreatBoard from './pages/CreateBoard';
+import EditBoard from './pages/EditBoard';
 import Follow from './pages/Follow';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -36,6 +37,7 @@ function App() {
               <Route path='/board' element={<Board/>}></Route>
               <Route exact path='/boardView/:id' element={<BoardView/>}></Route>
               <Route path='/createBoard' element={<CreatBoard/>}></Route>
+              <Route exact path='/editBoard/:id' element={<EditBoard/>}></Route>
               <Route path='/createNote' element={<CreateNote/>}></Route>
               <Route path='/follow' element={<Follow/>}></Route>
               <Route path='/login' element={<Login/>}></Route>
