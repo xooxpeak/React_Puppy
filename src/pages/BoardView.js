@@ -144,7 +144,7 @@ let BoardView = () => {
                             </div>
                             <div className="board-view-row">
                                 <label>작성자</label>
-                                <label>{board.user_id}</label>
+                                <label>{board.user_Id}</label>
                             </div>
                             <div className="board-view-row">
                                 <label>👀조회수</label>

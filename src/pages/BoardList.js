@@ -7,13 +7,8 @@ import '../css/Board.css';
 import axios from "axios";
 
 let BoardList = () => {
-    // let [boardList, setBoardList] = useState([]);
     let [dataList, setDataList] = useState([]);
     let navigate = useNavigate();
-
-    // useEffect(() => {
-    //     setDataList(boardList);
-    // }, [ ])
 
     useEffect(() => {
         // 게시글 목록을 불러오는 API
@@ -26,8 +21,6 @@ let BoardList = () => {
             console.log("Error:", error);
         });
     }, []);
-
-  
 
     let createBoard = () => {
         navigate('/createBoard');
@@ -47,7 +40,7 @@ let BoardList = () => {
                                 <Link to={`/boardView/${board.id}`}>{board.title}</Link>
                             </CommonTableColumn>
                             <CommonTableColumn>{board.board_date}</CommonTableColumn>
-                            <CommonTableColumn>{board.user_id}</CommonTableColumn>
+                            <CommonTableColumn>{board.user_Id}</CommonTableColumn>
                             <CommonTableColumn>{board.views}</CommonTableColumn>
                             <CommonTableColumn>{board.user_like}</CommonTableColumn>
                         </CommonTableRow>
