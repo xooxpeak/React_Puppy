@@ -27,13 +27,14 @@ let EditBoard = () => {
       },
     })
       .then((res) => {
-        const board = res.data;
-        console.log(board);
+        const { board } = res.data;
+        console.log("API Response:", board); 
         setFormData({
           title: board.title || "",
           content: board.content || "",
         });
         setLoading(false);
+        console.log("Updated formData:", { title: board.title, content: board.content });
       })
       .catch((error) => {
         console.error("Error: ", error);
@@ -41,13 +42,16 @@ let EditBoard = () => {
       });
   }, [id, cookies.accessToken]);
 
-  let handleChange = (e) => {
+
+    // 입력 필드의 변경을 상태에 반영
+    let handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
       }));
   };
+
 
   let handleSubmit = (e) => {
     e.preventDefault();
