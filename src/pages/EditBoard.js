@@ -56,9 +56,7 @@ let EditBoard = () => {
   let handleSubmit = (e) => {
     e.preventDefault();
     // 수정된 게시글을 서버에 보냄
-    axios
-      .put(
-        `http://localhost:8082/api/v1/auth/n/updateBoard?id=${id}`, formData, {
+    axios.post(`http://localhost:8082/api/v1/auth/n/updateBoard?id=${id}`, formData, {
           headers: {
             Authorization: `Bearer ${cookies.accessToken}`,
           },
