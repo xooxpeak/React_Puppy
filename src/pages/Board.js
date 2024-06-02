@@ -4,7 +4,7 @@ import Nav2 from "../components/Nav2";
 import '../css/Board.css';
 import { NavLink } from 'react-router-dom';
 
-const Board = props => {
+const Board = (props) => {
         return (
             <>
                 <div>

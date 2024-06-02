@@ -9,7 +9,8 @@ let BoardView = () => {
     let { id } = useParams();  // URL 파라미터에서 게시글 ID를 가져옴
     let [board, setBoard] = useState(null);
     let [isAuthor, setIsAuthor] = useState(false);  // 작성자 여부 상태
-    let [cookies] = useCookies(['accessToken']);
+    let [isLiked, setIsLiked] = useState(false);  // 좋아요 여부 상태
+    let [cookies] = useCookies(['accessToken', 'user_id']);
     let navigate = useNavigate();
 
     // 특정 게시글의 상세 정보를 불러오는 API 호출
@@ -70,10 +71,14 @@ let BoardView = () => {
                     }
                 });
                 const { data } = response;  // axios로부터 받은 응답(response)객체에서 data 속성을 추출하여 data에 할당
+                
                 console.log(data.board);
                 console.log(data.isAuthor);
+                console.log("Is liked:", data.isLiked);
+
                 setBoard(data.board);  // 상태 갱신
                 setIsAuthor(data.isAuthor);  // 상태 갱신
+                setIsLiked(data.isLiked);  // 좋아요 상태 갱신
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -114,6 +119,36 @@ let BoardView = () => {
             .catch((error) => {
                 console.log("Error: ", error);
             });
+    };
+
+
+    // 좋아요
+    let like = async () => {
+        try {
+            let res = await axios.post(`http://localhost:8082/api/v1/auth/y/userLike/${board.id}`, {}, {
+                headers: {
+                    'Authorization': 'Bearer ' + cookies.accessToken,
+                }
+                
+            });
+
+            let { data } = res;
+
+            if(data.code === "200") {
+                setIsLiked(!isLiked);  // 좋아요 상태 반전
+                setBoard(prevBoard => ({
+                    ...prevBoard,
+                    user_like: prevBoard.user_like + (isLiked ? -1 : 1)
+                }));
+            } else {
+                alert(data.message);
+                console.log("Like failed. Message:", data.message);
+            }
+
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+
     };
 
     return(
@@ -161,6 +196,16 @@ let BoardView = () => {
                                     {/* <img src={board.content} alt="게시글 이미지" /> */}
                                 </div>
                             </div>
+
+                            <div className="like-button-container">
+                                <button 
+                                    className={`like-button ${isLiked ? 'liked' : ''}`} 
+                                    onClick={like}
+                                >
+                                    {isLiked ? '좋아요 취소' : '좋아요'}
+                                </button>
+                            </div>
+
 
                             {/* 작성자인 경우에만 수정 및 삭제 버튼 표시 */}
                             {isAuthor && (
