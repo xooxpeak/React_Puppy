@@ -202,7 +202,7 @@ let BoardView = () => {
                                     className={`like-button ${isLiked ? 'liked' : ''}`} 
                                     onClick={like}
                                 >
-                                    {isLiked ? '좋아요 취소' : '좋아요'}
+                                    {isLiked ? '💘' : '🤍'}
                                 </button>
                             </div>
 

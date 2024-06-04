@@ -124,3 +124,35 @@
   .button-gap {
     margin-right: 10px; 
 }
+
+.like-button-container {
+  text-align: center;  
+  margin-top: 20px;  
+}
+
+.like-button {
+  padding: 10px 20px;  
+  font-size: 20px; 
+  width: 100px;  
+  height: auto;
+  border: 1px solid rgb(163, 156, 231); 
+  border-radius: 5px;  
+  background-color: #ffffff;  
+  color: red;  
+  cursor: pointer;  
+  text-align: center;  
+  transition: background-color 0.3s, transform 0.3s;  /* 호버 효과를 위한 트랜지션 추가 */
+}
+
+/* 좋아요 상태일 때 */
+.like-button.liked {
+  background-color: white;  
+  border: 1px solid rgb(245, 127, 127);
+}
+
+.like-button:hover {
+  background-color: rgb(245, 127, 127);  
+  color: red;
+  transform: scale(1.05);  /* 호버 시 버튼 크기 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
