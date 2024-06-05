@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import '../css/Board.css'
 import axios from "axios";
 import Nav2 from "../components/Nav2.js";
+import Comment from './Comment'; // Comment 컴포넌트 임포트
 
 let BoardView = () => {
     let { id } = useParams();  // URL 파라미터에서 게시글 ID를 가져옴
@@ -70,6 +71,7 @@ let BoardView = () => {
                         'Authorization': 'Bearer ' + cookies.accessToken
                     }
                 });
+
                 const { data } = response;  // axios로부터 받은 응답(response)객체에서 data 속성을 추출하여 data에 할당
                 
                 console.log(data.board);
@@ -90,7 +92,7 @@ let BoardView = () => {
         };
     }, [id, cookies.accessToken, navigate]);
 
-
+    
     // 이전 페이지로 돌아가기
     let goBack = () => {
         navigate(-1);
@@ -207,24 +209,27 @@ let BoardView = () => {
                             </div>
 
 
-                            {/* 작성자인 경우에만 수정 및 삭제 버튼 표시 */}
                             {isAuthor && (
-                                <div className="edit-del-button-container">
-                                    <button className="board-view-edit-btn" onClick={() => edit(board.id)}>수정</button>
-                                    <span className="button-gap"></span>
-                                    <button className="board-view-delete-btn" onClick={del}>삭제</button>
-                                </div>
-                            )}
-                        </>
-                    ) : '해당 게시글을 찾을 수 없습니다❌'
-                }
-                <div className="button-container">
-                    {/* <div className="button-wrapper"></div> */}
-                        <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
-                </div>
+                            <div className="edit-del-button-container">
+                                <button className="board-view-edit-btn" onClick={() => edit(board.id)}>수정</button>
+                                <span className="button-gap"></span>
+                                <button className="board-view-delete-btn" onClick={del}>삭제</button>
+                            </div>
+                        )}
+
+                        {/* 댓글 컴포넌트 */}
+                        <Comment id={id} cookies={cookies} />
+
+                        <div className="button-container">
+                            <button className="board-view-go-list-btn" onClick={goBack}>목록으로 돌아가기</button>
+                        </div>
+                    </>
+                ) : (
+                    <div className="board-not-found">해당 게시글을 찾을 수 없습니다❌</div>
+                )}
             </div>
         </>
     );
-}
+};
 
 export default BoardView;
