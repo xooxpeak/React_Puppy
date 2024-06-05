@@ -2,16 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useCookies } from "react-cookie";
+import { Placeholder } from 'react-bootstrap';
 
-const Comment = ({ id }) => {
+let Comment = ({ id }) => {
     const [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState([]);
-    let [cookies] = useCookies(['accessToken', 'user_id']);
+    let [cookies, setCookie] = useCookies(['accessToken', 'user_id']);
 
     const handleCommentSubmit = async () => {
         const commentData = {
-//            user_id: cookies.user_id,
-//            id: id,
             comment: newComment
         };
 
@@ -20,10 +19,8 @@ const Comment = ({ id }) => {
                 `http://localhost:8082/api/v1/auth/n/saveComment/${id}`,
                 commentData,
                 {
-                    params: {
-                        user_id: cookies.user_id
-                    },
                     headers: {
+                        'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + cookies.accessToken
                     }
                 }
@@ -31,7 +28,7 @@ const Comment = ({ id }) => {
 
             setComments([...comments, { ...commentData, id: response.data }]);
             setNewComment('');
-
+            console.log('Comment saved:', response.data);
             alert('댓글이 성공적으로 작성되었습니다.');
         } catch (error) {
             console.error("Error saving comment:", error);
@@ -44,9 +41,9 @@ const Comment = ({ id }) => {
     };
 
     return (
-        <div>
-            <textarea value={newComment} onChange={handleChange} />
-            <button onClick={handleCommentSubmit}>Submit Comment</button>
+        <div className="comment-container">
+            <input className="comment-input" value={newComment} onChange={handleChange} placeholder='댓글을 입력해주세요.' />
+            <button className="comment-button" onClick={handleCommentSubmit}>등록</button>
             <ul>
                 {comments.map((comment, index) => (
                     <li key={index}>
