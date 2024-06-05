@@ -11,13 +11,13 @@
 
 
   .board-view-title-box {
-    background-color: rgba(201, 128, 225, 0.3); /* 연한 보라색의 네모난 박스의 배경색 */
+    background-color: rgba(201, 128, 225, 0.3); 
     padding: 20px; 
-    border-radius: 10px; /* 둥근 모서리를 위한 경계 반경 */
-    text-align: center; /* 제목을 가운데 정렬 */
-    max-width: 63%; /* 최대 가로 너비 설정 */
+    border-radius: 10px; 
+    text-align: center; 
+    max-width: 63%; 
     max-height: auto;
-    margin: 30px auto 0; /* 가운데 정렬 및 상단 마진 추가 */
+    margin: 30px auto 0; 
     overflow: auto; /* 내용이 넘치는 경우 스크롤 표시 */
   }
 
@@ -40,8 +40,8 @@
     background-color: rgb(201, 128, 225);
     border-radius: 5px;
     font-size: 16px;
-    margin-top: 20px; /* 위 여백 조절 */
-    margin-bottom: 20px; /* 아래 여백 조절 */
+    margin-top: 20px; 
+    margin-bottom: 20px;
     justify-content: center; 
 }
 
@@ -74,8 +74,8 @@
   }
 
   .button-wrapper {
-    width: 10%; /* 버튼을 감싸는 요소의 너비를 버튼의 내용에 맞게 조절 */
-    text-align: center; /* 버튼을 가운데 정렬 */
+    width: 10%; 
+    text-align: center; 
 }
 
   .creat-board-btn {
@@ -125,12 +125,15 @@
     margin-right: 10px; 
 }
 
+
+/* 좋아요 */
 .like-button-container {
   text-align: center;  
   margin-top: 20px;  
 }
 
 .like-button {
+  margin-top: 50px;
   padding: 10px 20px;  
   font-size: 20px; 
   width: 100px;  
@@ -155,4 +158,39 @@
   color: red;
   transform: scale(1.05);  /* 호버 시 버튼 크기 확대 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 댓글 작성란 */
+.comment-container {
+  display: flex;
+  align-items: flex-start; 
+}
+
+.comment-input {
+  margin-top: 50px;
+  width: 100%;
+  max-width: 100%;
+  height: 70px; 
+  min-width: 200px;
+  border: 2px solid rgb(173, 172, 172);
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-y: auto;
+}
+
+.comment-button {
+  margin-top: 50px;
+  width: 100px;
+  height: 70px;
+  margin-left: 10px; 
+  padding: 8px 16px; 
+  font-size: 16px; 
+  cursor: pointer; 
+}
+
+.comment-button:hover {
+  background-color: #ffb3b3;
 }
