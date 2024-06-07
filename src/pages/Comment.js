@@ -1,13 +1,35 @@
 import React from 'react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from "react-cookie";
 import { Placeholder } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 let Comment = ({ id }) => {
-    const [newComment, setNewComment] = useState('');
-    const [comments, setComments] = useState([]);
+    let [newComment, setNewComment] = useState('');
+    let [comments, setComments] = useState([]);
     let [cookies, setCookie] = useCookies(['accessToken', 'user_id']);
+
+    useEffect(() => {
+        fetchComments();
+    }, []);
+
+    let fetchComments = async () => {
+        try {
+            let response = await axios.get(
+                `http://localhost:8082/api/v1/auth/n/comment/${id}`,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + cookies.accessToken
+                    }
+                }
+            );
+            setComments(response.data);
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+        }
+    };
+
 
     const handleCommentSubmit = async () => {
         const commentData = {
@@ -41,18 +63,25 @@ let Comment = ({ id }) => {
     };
 
     return (
-        <div className="comment-container">
-            <input className="comment-input" value={newComment} onChange={handleChange} placeholder='댓글을 입력해주세요.' />
-            <button className="comment-button" onClick={handleCommentSubmit}>등록</button>
-            <ul>
+        <>
+        <ul className="list-group">
+            <strong>댓글 {comments.length}</strong>
+            <hr />
                 {comments.map((comment, index) => (
-                    <li key={index}>
-                        <p>{comment.user_id}</p>
-                        <p>{comment.comment}</p>
+                    <li key={index} className="list-group-item">
+                            <strong>ID:</strong> {comment.user_id} 
+                            <span className='comment-date'> {comment.comment_date} </span>
+                            
+                        <div>{comment.comment}</div>
                     </li>
                 ))}
             </ul>
+
+        <div className="comment-container">
+            <input className="comment-input" value={newComment} onChange={handleChange} placeholder='댓글을 입력해주세요.' />
+            <button className="comment-button" onClick={handleCommentSubmit}>등록</button>
         </div>
+       </>
     );
 };
 

@@ -36,3 +36,20 @@
 .back-button:hover {
     background-color: #f8d1dd;
 }
+
+
+  /* 미디어 쿼리를 사용하여 화면 크기에 따라 스타일 변경 */
+  @media (max-width: 768px) {
+    /* 화면 너비가 768px 이하일 때 적용되는 스타일 */
+    form {
+      max-width: 100%; /* 전체 너비로 확장 */
+      padding: 10px; /* 작은 여백 추가 */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    /* 화면 너비가 576px 이하일 때 적용되는 스타일 */
+    textarea {
+      height: 100px; /* 더 작은 세로 길이 */
+    }
+  }

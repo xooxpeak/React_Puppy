@@ -194,3 +194,33 @@
 .comment-button:hover {
   background-color: #ffb3b3;
 }
+
+
+.list-group {
+  margin-top: 50px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item .badge {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.comment-date {
+  margin-left: 30px;
+  color:darkgray;
+}
