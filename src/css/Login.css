@@ -80,3 +80,19 @@ h3#login_title {
 .link a:hover {
     color: #f8d1dd; /* 마우스 호버 시 색상 변경 */
 }
+
+/* 카카오 로그인 링크에 대한 스타일 */
+.kakao-login-link {
+    /* 원하는 스타일을 여기에 추가합니다 */
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FEE500;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    margin : 20px 0 10px 0;
+  }
+
+.kakao-login-link:hover {
+    background-color: #FFD500;
+}

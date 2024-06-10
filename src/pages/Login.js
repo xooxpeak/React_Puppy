@@ -13,6 +13,8 @@ let Login = () => {
         let [userId, setUserId] = useState("");
         let [password, setPassword] = useState("");
 
+        const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
+
         let navigate = useNavigate();   // useNavigate 훅 사용
 
         let onUserIdHandler = (e) => {
@@ -46,6 +48,7 @@ let Login = () => {
             .then((res) => {
                 // 로그인 성공
                 console.log(res.data)
+                console.log(res.status)
                 if (res.status === 200) {
                     // 쿠키에 사용자 정보 저장
                    // setCookies('user', { userId, password });  
@@ -63,6 +66,7 @@ let Login = () => {
                     navigate("/");  // 메인페이지로 이동
                     
                 } else {
+                    console.log(res.status)
                 // 로그인 실패
                     alert("아이디 또는 비밀번호가 잘못되었습니다.");
                     
@@ -74,6 +78,7 @@ let Login = () => {
                 console.error("Error:", error);
             });
         }
+
 
         return (
             <>
@@ -90,6 +95,7 @@ let Login = () => {
                             <input type="text" className="userId" id="userId" placeholder="아이디" value={userId} onChange={onUserIdHandler} autoFocus></input>
                             <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
                             <button onClick={loginHandler}>Login</button>
+                            <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
                         </div>
                         <div className="link">
                             <NavLink to="/findId">아이디 찾기</NavLink>
