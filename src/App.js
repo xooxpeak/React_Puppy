@@ -20,6 +20,7 @@ import Register from './pages/Register';
 import RegisterPuppy from './pages/RegisterPuppy';
 import CreateStore from './pages/CreateStore';
 import StoreList from './pages/StoreList';
+import KakaoLogin from './pages/KakaoLogin';
 
 axios.defaults.withCredentials = true;
 
@@ -45,6 +46,7 @@ function App() {
               <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
               <Route path='/createStore' element={<CreateStore/>}></Route>
               <Route path='/storeList' element={<StoreList/>}></Route>
+              <Route path='/login/oauth2/code/kakao' element={<KakaoLogin/>}></Route>
               {/* <Route path='/findId' element={<FindId/>}></Route>
               <Route path='/findPw' element={<FindPw/>}></Route>
               <Route path='/resetPw' element={<ResetPw/>}></Route>
