@@ -19,7 +19,7 @@ let RegisterPuppy = () => {
         allergy : "",
         personality : "",
         introduction : "",
-        profile_img : ""
+        profile_img : "",
     });
 
     // axios를 사용하여 HTTP POST 요청을 보냄
@@ -35,7 +35,7 @@ let RegisterPuppy = () => {
                 allergy: puppy.allergy,
                 personality: puppy.personality,
                 introduction: puppy.introduction,
-                profile_img: puppy.profile_img
+                profile_img: puppy.profile_img,
             },
             {
                 headers: {
@@ -53,12 +53,12 @@ let RegisterPuppy = () => {
     // useState 훅으로 관리되는 puppy 객체의 속성을 업데이트하는 함수
     let onChangePuppyData = (e) => {
         let { name, value } = e.target;
-         setPuppy({ ...puppy, [name]: value });
-        // if (name === "neutering") {
-        //     setPuppy({ ...puppy, [name]: value === "true" });
-        // } else {
-        //     setPuppy({ ...puppy, [name]: value });
-        // }
+          setPuppy({ ...puppy, [name]: value });
+    //     setPuppy(prevPuppy => ({
+    //        ...prevPuppy,
+    //        [name]: value
+    //    }));
+        
     }
 
     return (
