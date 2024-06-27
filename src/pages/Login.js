@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../css/Login.css';
 import Nav2 from "../components/Nav2";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -7,7 +7,12 @@ import { useCookies } from "react-cookie";
 
 let Login = () => {
 
-        let [cookies, setCookies] = useCookies(['accessToken']);
+        // let [cookies, setCookies, removeCookie] = useCookies(['accessToken']);
+        let [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
+
+        // accessToken과 refreshToken의 상태를 관리하기 위한 useState 훅 사용. 초기값은 쿠키에서 가져옴.
+        let [accessToken, setAccessToken] = useState(cookies.accessToken);
+        let [refreshToken, setRefreshToken] = useState(cookies.refreshToken);
 
         // 아이디와 비밀번호
         let [userId, setUserId] = useState("");
@@ -16,6 +21,13 @@ let Login = () => {
         const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
         let navigate = useNavigate();   // useNavigate 훅 사용
+
+
+        // 쿠키의 토큰들을 저장 & 상태를 업데이트 
+        useEffect(() => {
+            setAccessToken(cookies.accessToken);
+            setRefreshToken(cookies.refreshToken);
+        }, [cookies]);
 
         let onUserIdHandler = (e) => {
             setUserId(e.target.value)
@@ -26,6 +38,32 @@ let Login = () => {
             setPassword(e.target.value)
             console.log("password: ", e.target.value);
         }
+
+
+    // accessToken을 갱신하기 위한 함수
+    let refreshAccessToken = async () => {
+        try {
+            // 서버에 refreshToken을 보내고 새로운 accessToken을 받음
+            let response = await axios.post(
+                `http://localhost:8082/api/v1/auth/n/refreshToken`,
+                { refreshToken },  // 요청 본문에 refreshToken 포함
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            // 새로운 accessToken을 쿠키에 저장하고 상태도 업데이트
+            setCookie('accessToken', response.data.accessToken, { path: '/' });
+            setAccessToken(response.data.accessToken);
+        } catch (error) {
+            console.log('error: ', error);
+        }
+    };
+
+
+
 
         // 로그인 함수
         let loginHandler = () => {
@@ -49,25 +87,23 @@ let Login = () => {
                 // 로그인 성공
                 console.log(res.data)
                 console.log(res.status)
+
                 if (res.status === 200) {
-                    // 쿠키에 사용자 정보 저장
-                   // setCookies('user', { userId, password });  
-
                     // 서버로부터 받은 액세스 토큰을 쿠키에 저장
-                    setCookies('accessToken', res.data.accessToken);
-
+                    setCookie('accessToken', res.data.accessToken, { path: '/' });
+                    setCookie('refreshToken', res.data.refreshToken, { path: '/' });
                     // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
                     axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
-                   
-                   // 이 쿠키는 서버에 요청을 보낼 때마다 브라우저가 해당 쿠키를 함께 보냄
-                   // document.cookie = `accessToken=${res.data.accessToken}; Path=/;`;
-
                     alert("로그인 성공!");
                     navigate("/");  // 메인페이지로 이동
                     
+                }  else if (res.status === 401) {
+                    // Access Token이 만료된 경우, Access Token 재발급 시도
+                    // retryLogin();
+                    refreshAccessToken();
                 } else {
+                    // 로그인 실패
                     console.log(res.status)
-                // 로그인 실패
                     alert("아이디 또는 비밀번호가 잘못되었습니다.");
                     
                 }
@@ -78,6 +114,16 @@ let Login = () => {
                 console.error("Error:", error);
             });
         }
+
+
+        // 로그아웃
+        let logout = () => {
+            removeCookie('accessToken', { path: '/' });
+            removeCookie('refreshToken', { path: '/' });
+            axios.defaults.headers.common['Authorization'] = null;
+            navigate("/login");
+        }
+
 
 
         return (
