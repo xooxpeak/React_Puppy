@@ -4,11 +4,13 @@ import Nav2 from "../components/Nav2";
 import { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 // useState 훅을 사용하여 객체 형태의 puppy 상태 선언
 let RegisterPuppy = () => {
 
     let [cookies] = useCookies(['accessToken']);
+    let navigate = useNavigate();
 
     let [puppy,setPuppy] = useState({
         puppy_name : "",
@@ -43,7 +45,9 @@ let RegisterPuppy = () => {
                 }
             }
         ).then((res) => {
+            alert("우리 아이 등록 성공!")
             console.log(res);
+            navigate('/');
         }).catch((error) => {
             console.error(error);
         })
