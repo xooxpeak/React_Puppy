@@ -50,9 +50,6 @@ function App() {
               <Route path='/register' element={<Register/>}></Route>
               <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
               <Route path='/puppy' element={<Puppy/>}></Route>
-              {/* <Route exact path='/puppy/:userId' Component={<Puppy/>}></Route> */}
-              {/* <Route path="/puppy/:userId" element={<Puppy/>} /> */}
-              <Route path="/puppy/:user_id" element={<PuppyList/>} />
               <Route path='/createStore' element={<CreateStore/>}></Route>
               <Route path='/storeList' element={<StoreList/>}></Route>
               <Route path='/comment' element={<Comment/>}></Route>
