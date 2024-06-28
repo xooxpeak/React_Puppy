@@ -19,11 +19,13 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import RegisterPuppy from './pages/RegisterPuppy';
 import Puppy from './pages/Puppy';
+import PuppyList from './pages/PuppyList';
 import CreateStore from './pages/CreateStore';
 import StoreList from './pages/StoreList';
 import KakaoLogin from './pages/KakaoLogin';
 import Comment from './pages/Comment';
 import Token from './pages/Token';
+
 
 axios.defaults.withCredentials = true;
 
@@ -48,6 +50,9 @@ function App() {
               <Route path='/register' element={<Register/>}></Route>
               <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
               <Route path='/puppy' element={<Puppy/>}></Route>
+              {/* <Route exact path='/puppy/:userId' Component={<Puppy/>}></Route> */}
+              {/* <Route path="/puppy/:userId" element={<Puppy/>} /> */}
+              <Route path="/puppy/:user_id" element={<PuppyList/>} />
               <Route path='/createStore' element={<CreateStore/>}></Route>
               <Route path='/storeList' element={<StoreList/>}></Route>
               <Route path='/comment' element={<Comment/>}></Route>
