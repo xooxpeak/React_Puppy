@@ -3,7 +3,7 @@ import Nav2 from "../components/Nav2";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useParams, useNavigate } from 'react-router-dom';
-import "../css/PuppyList.css"; // Import your CSS file
+import "../css/PuppyList.css"; 
 
 let PuppyList = () => {
     let navigate = useNavigate();
@@ -45,7 +45,7 @@ let PuppyList = () => {
                 <Nav2 />
             </div>
             <h3 style={{ textAlign: "center", marginTop: "20px" }}>
-                <strong>우리 아이 정보</strong>
+                <strong>강아지 정보 🩷</strong>
             </h3>
             <div className="container-puppy">
                 {puppies.map((puppy) => (
@@ -79,7 +79,7 @@ let PuppyList = () => {
                         </div>
                         <div className="card-buttons">
                             <button onClick={() => edit(puppy.id)}>수정</button>
-                            <button onClick={() => del(puppy.id)}>삭제</button>
+                            <button className="del" onClick={() => del(puppy.id)}>삭제</button>
                         </div>
                     </div>
                 ))}

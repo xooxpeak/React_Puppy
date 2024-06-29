@@ -19,7 +19,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import RegisterPuppy from './pages/RegisterPuppy';
 import Puppy from './pages/Puppy';
-import PuppyList from './pages/PuppyList';
+import EditPuppy from './pages/EditPuppy';
 import CreateStore from './pages/CreateStore';
 import StoreList from './pages/StoreList';
 import KakaoLogin from './pages/KakaoLogin';
@@ -50,6 +50,7 @@ function App() {
               <Route path='/register' element={<Register/>}></Route>
               <Route path='/registerPuppy' element={<RegisterPuppy/>}></Route>
               <Route path='/puppy' element={<Puppy/>}></Route>
+              <Route path='/editPuppy/:id' element={<EditPuppy/>}></Route>
               <Route path='/createStore' element={<CreateStore/>}></Route>
               <Route path='/storeList' element={<StoreList/>}></Route>
               <Route path='/comment' element={<Comment/>}></Route>

@@ -30,6 +30,7 @@
     margin-bottom: 10px;
 }
 
+/* 강아지 정보 수정 버튼 */
 #registerPuppyBut {
     background-color: rgb(163, 156, 231);
     color : white;
@@ -41,6 +42,11 @@
     border-radius: 5px;
     margin : 20px 0 20px 0; 
 }
+
+#registerPuppyBut:hover {
+    background-color: #f8d1dd;
+}
+
 
 .neutering-container {
     display: flex;
