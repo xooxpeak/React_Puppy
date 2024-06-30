@@ -18,13 +18,9 @@ let Login = () => {
         let [userId, setUserId] = useState("");
         let [password, setPassword] = useState("");
 
-        // 카카오 로그인
         const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
         let navigate = useNavigate();   // useNavigate 훅 사용
-
-        // 네이버 로그인
-        const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID;
 
 
         // 쿠키의 토큰들을 저장 & 상태를 업데이트 
@@ -146,7 +142,6 @@ let Login = () => {
                             <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
                             <button onClick={loginHandler}>Login</button>
                             <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
-                            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=STATE_STRING&redirect_uri=http://localhost:3000/login/oauth2/code/naver`}  className="naver-login-link"> 네이버 로그인</a>
                         </div>
                         <div className="link">
                             <NavLink to="/findId">아이디 찾기</NavLink>
