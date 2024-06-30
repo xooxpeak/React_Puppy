@@ -23,6 +23,7 @@ import EditPuppy from './pages/EditPuppy';
 import CreateStore from './pages/CreateStore';
 import StoreList from './pages/StoreList';
 import KakaoLogin from './pages/KakaoLogin';
+import NaverLogin from './pages/NaverLogin';
 import Comment from './pages/Comment';
 import Token from './pages/Token';
 
@@ -55,6 +56,7 @@ function App() {
               <Route path='/storeList' element={<StoreList/>}></Route>
               <Route path='/comment' element={<Comment/>}></Route>
               <Route path='/login/oauth2/code/kakao' element={<KakaoLogin/>}></Route>
+              <Route path='/login/oauth2/code/naver' element={<NaverLogin/>}></Route>
               <Route path='/token' element={<Token/>}></Route>
               {/* <Route path='/findId' element={<FindId/>}></Route>
               <Route path='/findPw' element={<FindPw/>}></Route>
