@@ -40,10 +40,22 @@
     width: 100px;
     display: inline-block;
     align-items: center;
-    border: none;
+    /* border: none; */
     cursor: pointer;
 }
 
 .card-buttons button:hover {
     background-color: #ffb3b3;
 }
+
+.del {
+    width: 100px;
+    height: auto;
+    background-color: white;
+    color: rgb(163, 156, 231);
+    border: 1px solid rgb(163, 156, 231);
+  }
+
+  .del:hover {
+    background-color: #ffb3b3;
+  }
