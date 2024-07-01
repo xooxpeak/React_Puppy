@@ -5,6 +5,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
+const generateState = () => {
+    return Math.random().toString(36).substring(2, 15);
+};
+
 let Login = () => {
 
         // let [cookies, setCookies, removeCookie] = useCookies(['accessToken']);
@@ -19,6 +23,12 @@ let Login = () => {
         let [password, setPassword] = useState("");
 
         const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
+        
+        // .env 사용하면 왜 안될까?
+        //const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID;
+
+        // .env 사용하지 않았더니 됨
+        const naverClientId = "OybP54NI6clQWNbhDnlm";
 
         let navigate = useNavigate();   // useNavigate 훅 사용
 
@@ -124,7 +134,8 @@ let Login = () => {
             navigate("/login");
         }
 
-
+        const state = generateState();
+        localStorage.setItem("naver_state", state);
 
         return (
             <>
@@ -142,6 +153,8 @@ let Login = () => {
                             <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
                             <button onClick={loginHandler}>Login</button>
                             <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
+                            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=http://localhost:8082/api/v1/auth/n/naverLogin&state=${encodeURIComponent(state)}`} className="naver-login-link"> 네이버 로그인</a>
+                            {/* <button onClick={naverLoginHandler} className="naver-login-link">네이버 로그인</button> */}
                         </div>
                         <div className="link">
                             <NavLink to="/findId">아이디 찾기</NavLink>
