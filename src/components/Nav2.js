@@ -4,8 +4,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useCookies } from "react-cookie";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import Puppy from "../pages/Puppy";
 
 let Nav2 = () => {
+
+  let navigate = useNavigate(); 
 
   let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);  // 쿠키 관리
   let [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -23,9 +28,10 @@ let Nav2 = () => {
     // 로그아웃 함수
     const handleLogout = () => {
       // 쿠키에서 accessToken 제거
-      removeCookies('accessToken');
+      removeCookies('accessToken', { path: '/' });
       // 로그인 상태 변경
       setIsLogin(false);
+      navigate("/login");
   };
 
 
@@ -48,6 +54,7 @@ let Nav2 = () => {
               <NavDropdown.Item href="/createStore">새로운 댕린이집 신청</NavDropdown.Item>
               <NavDropdown.Item href="/storeList">댕린이집 목록</NavDropdown.Item>
               <NavDropdown.Item href="/registerPuppy">우리 아이 등록</NavDropdown.Item>
+              <NavDropdown.Item href="/puppy">우리 아이 정보</NavDropdown.Item>
               <NavDropdown.Divider />
             </NavDropdown>
           </Nav>
@@ -55,8 +62,12 @@ let Nav2 = () => {
             {/* 로그인 상태에 따라 다른 링크를 표시 */}
             {isLogin ? (
               <>
-                <Nav.Link href="/main">마이페이지</Nav.Link>
-                <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
+              <NavDropdown title="마이페이지" id="collapsible-nav-dropdown">
+                <NavDropdown.Item href="/profile">프로필</NavDropdown.Item>
+                <NavDropdown.Item href="/puppy">강아지 정보</NavDropdown.Item>
+                <NavDropdown.Item href="/settings">설정</NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
               </>
             ) : (
               <>
