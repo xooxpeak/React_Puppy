@@ -12,22 +12,26 @@ let PuppyList = () => {
     let { id } = useParams();  // URL 파라미터에서 게시글 ID를 가져옴
 
     // 서버로부터 해당 사용자의 강아지 목록을 가져옴
-    useEffect(() => {
+    const fetchPuppies = () => {
         axios({
             url: `http://localhost:8082/api/v1/auth/y/puppy`,
             method: 'GET',
             headers: {
-                'Authorization' : 'Bearer '+ cookies.accessToken
-              },
+                'Authorization' : 'Bearer ' + cookies.accessToken
+            },
         })
-            .then((res) => {
-                const puppies = res.data;
-                console.log("API Response:", puppies); 
-                setPuppies(puppies);
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-            });
+        .then((res) => {
+            const puppies = res.data;
+            console.log("API Response:", puppies); 
+            setPuppies(puppies);
+        })
+        .catch((error) => {
+            console.error("Error fetching puppies: ", error);
+        });
+    };
+
+    useEffect(() => {
+        fetchPuppies();
     }, [id, cookies.accessToken]);
 
     // 강아지 정보 수정 페이지로 이동
@@ -46,7 +50,7 @@ let PuppyList = () => {
         .then(() => {
             console.log("강아지 삭제 성공!");
             alert("강아지 정보를 삭제했습니다 🗑️");
-            navigate("/puppy");
+            fetchPuppies(); // 삭제 후 목록을 다시 불러옴
         })
         .catch((error) => {
             console.log("Error: ", error);
