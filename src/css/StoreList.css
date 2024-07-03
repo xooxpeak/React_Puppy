@@ -1,0 +1,63 @@
+/* StoreList.css */
+
+.container-store {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-store {
+    width: calc(25% - 20px);
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    transition: transform 0.2s;
+}
+
+.card-store:hover {
+    transform: scale(1.05);
+    background-color: rgb(194, 188, 247);
+}
+
+.card-content {
+    margin-bottom: 10px;
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-buttons button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.card-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.del {
+    background-color: white;
+    color: rgb(163, 156, 231);
+    border: 1px solid rgb(163, 156, 231);
+}
+
+.del:hover {
+    background-color: #ffb3b3;
+}
