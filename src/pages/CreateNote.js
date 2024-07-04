@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from "react-cookie";
 import Nav2 from '../components/Nav2';
@@ -6,14 +6,32 @@ import '../css/Note.css';
 
 const CreateNote = () => {
   const [cookies] = useCookies(['accessToken']);
+  const [puppies, setPuppies] = useState([]);
   const [newNote, setNewNote] = useState({
     noteDate: '',
     meal: '',
     poopFrequency: '',
     poopCondition: '',
     mood: '',
-    daily: ''
+    daily: '',
+    puppyId: ''
   });
+
+
+  // 강아지 전체 목록 불러오기
+  useEffect(() => {
+    axios.get('http://localhost:8082/api/v1/auth/y/puppies', {
+      headers: {
+        'Authorization': `Bearer ${cookies.accessToken}`
+      }
+    })
+      .then(response => {
+        setPuppies(response.data);
+      })
+      .catch(error => {
+        console.error('강아지 목록 불러오기 오류!', error);
+      });
+  }, [cookies.accessToken]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -23,6 +41,8 @@ const CreateNote = () => {
     }));
   };
 
+
+  // 알림장 저장
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:8082/api/v1/auth/y/saveNote', newNote, {
@@ -30,16 +50,19 @@ const CreateNote = () => {
         'Authorization': `Bearer ${cookies.accessToken}`
       }
     })
-      .then(response => {
+      .then((response) => {
         setNewNote({
           noteDate: '',
           meal: '',
           poopFrequency: '',
           poopCondition: '',
           mood: '',
-          daily: ''
+          daily: '',
+          puppyId: ''
         });
-      })
+        console.log(response.data)
+        alert("알림장 등록 완료!")}
+      )
       .catch(error => {
         console.error('There was an error creating the note!', error);
       });
@@ -54,6 +77,17 @@ const CreateNote = () => {
 
       <form className="noteForm" onSubmit={handleSubmit}>
         <div className="section">
+          <fieldset>
+            <legend>🐶 강아지 선택</legend>
+            <select name="puppyId" value={newNote.puppyId} onChange={handleInputChange} required>
+              <option value="">강아지를 선택하세요</option>
+              {puppies.map(puppy => (
+                <option key={puppy.id} value={puppy.id}>{puppy.puppy_name}</option>
+              ))}
+            </select>
+          </fieldset>
+          <br />
+
           <fieldset>
             <legend>🦴 식사</legend> 
             <label><input type="radio" name="meal" value="많이 먹음" onChange={handleInputChange} /> 많이 먹음 &nbsp;</label> 
@@ -78,7 +112,7 @@ const CreateNote = () => {
           <br />
 
           <fieldset>
-            <legend>🐾 컨디션</legend>
+            <legend>🐕 컨디션</legend>
             <label><input type="radio" name="mood" value="좋음" onChange={handleInputChange} /> 좋음 &nbsp;</label> 
             <label><input type="radio" name="mood" value="보통" onChange={handleInputChange} /> 보통 &nbsp;</label> 
             <label><input type="radio" name="mood" value="피곤" onChange={handleInputChange} /> 피곤 &nbsp;</label> 
