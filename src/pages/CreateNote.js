@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import Nav2 from '../components/Nav2';
 import '../css/Note.css';
 
-const CreateNote = () => {
-  const [cookies] = useCookies(['accessToken']);
-  const [puppies, setPuppies] = useState([]);
-  const [newNote, setNewNote] = useState({
+let CreateNote = () => {
+  let navigate = useNavigate();
+  let [cookies] = useCookies(['accessToken']);
+  let [puppies, setPuppies] = useState([]);
+  let [newNote, setNewNote] = useState({
     noteDate: '',
     meal: '',
     poopFrequency: '',
@@ -16,7 +18,6 @@ const CreateNote = () => {
     daily: '',
     puppyId: ''
   });
-
 
   // 강아지 전체 목록 불러오기
   useEffect(() => {
@@ -33,17 +34,16 @@ const CreateNote = () => {
       });
   }, [cookies.accessToken]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  let handleInputChange = (event) => {
+    let { name, value } = event.target;
     setNewNote(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
 
-
   // 알림장 저장
-  const handleSubmit = (event) => {
+  let handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:8082/api/v1/auth/y/saveNote', newNote, {
       headers: {
@@ -61,10 +61,11 @@ const CreateNote = () => {
           puppyId: ''
         });
         console.log(response.data)
+        navigate('/noteList')
         alert("알림장 등록 완료!")}
-      )
+        )
       .catch(error => {
-        console.error('There was an error creating the note!', error);
+        console.error('Error: ', error);
       });
   };
 
@@ -85,6 +86,18 @@ const CreateNote = () => {
                 <option key={puppy.id} value={puppy.id}>{puppy.puppy_name}</option>
               ))}
             </select>
+          </fieldset>
+          <br />
+
+          <fieldset>
+            <legend>📅 날짜</legend>
+            <input 
+              type="date" 
+              name="noteDate" 
+              value={newNote.noteDate} 
+              onChange={handleInputChange} 
+              required 
+            />
           </fieldset>
           <br />
 
