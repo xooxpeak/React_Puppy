@@ -1,146 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import Nav2 from '../components/Nav2';
-import '../css/Note.css'; 
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useCookies } from "react-cookie";
+import Nav2 from '../components/Nav2';
+import '../css/Note.css';
 
-let CreateNote = () => {
-
-  let [note, setNote] = useState({
-    meal: [],
-    poop: { frequency: '', condition: '' },
-    condition: '',
+const CreateNote = () => {
+  const [cookies] = useCookies(['accessToken']);
+  const [newNote, setNewNote] = useState({
+    noteDate: '',
+    meal: '',
+    poopFrequency: '',
+    poopCondition: '',
+    mood: '',
     daily: ''
   });
 
-  let handleChange = (e) => {
-    const { name, value, checked } = e.target;
-  
-    if (name === 'meal') {
-      if (checked) {
-        setNote(prevNote => ({
-          ...prevNote,
-          meal: [...prevNote.meal, value] // 이전의 meal 배열에 새로운 value 추가
-        }));
-      } else {
-        setNote(prevNote => ({
-          ...prevNote,
-          meal: prevNote.meal.filter(item => item !== value) // 선택 해제된 value를 meal 배열에서 제거
-        }));
-      }
-    } else if (name === 'poopFrequency') {
-      setNote(prevNote => ({
-        ...prevNote,
-        poop: {
-          ...prevNote.poop,
-          frequency: value
-        }
-      }));
-    } else if (name === 'poopCondition') {
-      setNote(prevNote => ({
-        ...prevNote,
-        poop: {
-          ...prevNote.poop,
-          condition: value
-        }
-      }));
-    } else if (name === 'condition' || name === 'daily') {
-      setNote(prevNote => ({
-        ...prevNote,
-        [name]: value
-      }));
-    }
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNewNote(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-      // useState 훅으로 관리되는 user 객체의 속성을 업데이트하는 함수
-    //   let onChangeNoteData = (e) => {
-    //     setNote({...note, [e.target.name] : e.target.value})
-    //     console.log(note);
-    // }
-
-    // useEffect(() => {
-    //   console.log(note);
-    // }, [note]); // note 상태가 변경될 때마다 useEffect가 실행됩니다.
-    
-  
-
-    // axios를 사용하여 HTTP POST 요청을 보냄
-    let create = () => {
-      axios.post('http://localhost:8082/api/v1/auth/n/createNote', {
-          data: note
-      }).then((res) => {
-          console.log('성공', res.data);
-          alert("노트 작성 성공!");
-          setNote(res.data);
-      }).catch((error) => {
-          console.log("Error:", error);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios.post('http://localhost:8082/api/v1/auth/y/saveNote', newNote, {
+      headers: {
+        'Authorization': `Bearer ${cookies.accessToken}`
+      }
+    })
+      .then(response => {
+        setNewNote({
+          noteDate: '',
+          meal: '',
+          poopFrequency: '',
+          poopCondition: '',
+          mood: '',
+          daily: ''
+        });
+      })
+      .catch(error => {
+        console.error('There was an error creating the note!', error);
       });
-  }
-
-  // let handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log('Submitted Note:', note);
-
-  //   // axios를 사용하여 서버로 데이터를 전송
-  //   axios.post('http://localhost:8082/api/v1/auth/n/createPuppyNote', note)
-  //   .then((res) => {
-  //     console.log('성공', res.data);
-  //     setNote(res.data);
-  //     // 성공적으로 서버에 데이터를 전송한 후에 할 일을 여기에 추가하세요.
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error submitting note:', error);
-  //   });
-  // };
+  };
 
   return (
     <>
-    <div>
+      <div>
         <Nav2 /> 
-    </div>  
-    <h3 style={{textAlign: 'center', marginTop: '20px'}}>📝알림장</h3>
+      </div>  
+      <h3 style={{ textAlign: 'center', marginTop: '20px' }}>📝알림장</h3>
 
-        <form className="noteForm">
+      <form className="noteForm" onSubmit={handleSubmit}>
         <div className="section">
-            <fieldset>
-              <legend>🦴 식사</legend> 
-              <label><input type="checkbox" name="meal" value="1" onChange={handleChange} /> 아침식사 &nbsp;</label> 
-              <label><input type="checkbox" name="meal" value="2" onChange={handleChange} /> 점심식사 &nbsp;</label> 
-              <label><input type="checkbox" name="meal" value="3" onChange={handleChange} /> 저녁식사 &nbsp;</label> 
-              <label><input type="checkbox" name="meal" value="4" onChange={handleChange} /> 간식 &nbsp;</label> 
-            </fieldset>
-              <br />
+          <fieldset>
+            <legend>🦴 식사</legend> 
+            <label><input type="radio" name="meal" value="많이 먹음" onChange={handleInputChange} /> 많이 먹음 &nbsp;</label> 
+            <label><input type="radio" name="meal" value="적당하게 먹음" onChange={handleInputChange} /> 적당하게 먹음 &nbsp;</label> 
+            <label><input type="radio" name="meal" value="조금 먹음" onChange={handleInputChange} /> 조금 먹음 &nbsp;</label> 
+            <label><input type="radio" name="meal" value="안먹음" onChange={handleInputChange} /> 안먹음 &nbsp;</label> 
+          </fieldset>
+          <br />
 
-            <fieldset>
-              <legend>💩 배변</legend>
-              <label><input type="checkbox" name="poopFrequency" value="0" onChange={handleChange} /> 0회 &nbsp;</label>
-              <label><input type="checkbox" name="poopFrequency" value="1" onChange={handleChange} /> 1회 &nbsp;</label>
-              <label><input type="checkbox" name="poopFrequency" value="2" onChange={handleChange} /> 2회 &nbsp;</label>
-              <label><input type="checkbox" name="poopFrequency" value="3" onChange={handleChange} /> 3회 &nbsp;</label>
-              <br />
-              <label><input type="checkbox" name="poopCondition" value="Good" onChange={handleChange} /> 건강 &nbsp;</label>
-              <label><input type="checkbox" name="poopCondition" value="Normal" onChange={handleChange} /> 보통 &nbsp;</label>
-              <label><input type="checkbox" name="poopCondition" value="Bad" onChange={handleChange} /> 나쁨 &nbsp;</label>
-              <label><input type="checkbox" name="poopCondition" value="Diarrhea" onChange={handleChange} /> 설사 &nbsp;</label>
-            </fieldset>
-              <br />
-
-            <fieldset>
-              <legend>🐾 컨디션</legend>
-              <label><input type="checkbox" name="condition" value="Good" onChange={handleChange} /> 좋음   &nbsp;</label> 
-              <label><input type="checkbox" name="condition" value="Normal" onChange={handleChange} /> 보통 &nbsp;</label> 
-              <label><input type="checkbox" name="condition" value="Tired" onChange={handleChange} /> 피곤 &nbsp;</label> 
-              <label><input type="checkbox" name="condition" value="Bad" onChange={handleChange} /> 나쁨 &nbsp;</label> 
-              <br />
-            </fieldset>
+          <fieldset>
+            <legend>💩 배변</legend>
+            <label><input type="radio" name="poopFrequency" value="0회" onChange={handleInputChange} /> 0회 &nbsp;</label>
+            <label><input type="radio" name="poopFrequency" value="1회" onChange={handleInputChange} /> 1회 &nbsp;</label>
+            <label><input type="radio" name="poopFrequency" value="2회" onChange={handleInputChange} /> 2회 &nbsp;</label>
+            <label><input type="radio" name="poopFrequency" value="3회" onChange={handleInputChange} /> 3회 &nbsp;</label>
             <br />
+            <label><input type="radio" name="poopCondition" value="건강" onChange={handleInputChange} /> 건강 &nbsp;</label>
+            <label><input type="radio" name="poopCondition" value="보통" onChange={handleInputChange} /> 보통 &nbsp;</label>
+            <label><input type="radio" name="poopCondition" value="나쁨" onChange={handleInputChange} /> 나쁨 &nbsp;</label>
+            <label><input type="radio" name="poopCondition" value="설사" onChange={handleInputChange} /> 설사 &nbsp;</label>
+          </fieldset>
+          <br />
 
-        <fieldset>
+          <fieldset>
+            <legend>🐾 컨디션</legend>
+            <label><input type="radio" name="mood" value="좋음" onChange={handleInputChange} /> 좋음 &nbsp;</label> 
+            <label><input type="radio" name="mood" value="보통" onChange={handleInputChange} /> 보통 &nbsp;</label> 
+            <label><input type="radio" name="mood" value="피곤" onChange={handleInputChange} /> 피곤 &nbsp;</label> 
+            <label><input type="radio" name="mood" value="나쁨" onChange={handleInputChange} /> 나쁨 &nbsp;</label> 
+            <br />
+          </fieldset>
+          <br />
+
+          <fieldset>
             <legend>💜 오늘 하루는</legend>
-            <textarea name="daily" id="daily" value={note.daily} onChange={handleChange}></textarea>
-        </fieldset>
+            <textarea name="daily" value={newNote.daily} onChange={handleInputChange}></textarea>
+          </fieldset>
         </div>
-        <button type="button" onClick={create}>작성하기</button>
-        </form>
+        <button type="submit">작성하기</button>
+      </form>
     </>
   );
 };
