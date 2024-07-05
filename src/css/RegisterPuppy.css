@@ -1,77 +1,83 @@
 .registerPuppyForm {
-        width: 400px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-top: 7%;
-        align-items: center;
-        position: absolute;
-        border: 5px solid rgb(163, 156, 231);
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid rgb(163, 156, 231);
+    padding: 30px;
+    margin-top: 20px; 
+    border-radius: 10px;
+    background-color: #fff;
 }
 
-
-.input-puppy {
+.input-puppy, .input-introduction {
     width: 300px;
-    height: 30px;
+    height: 40px;
     border: 1px solid rgb(163, 156, 231);
     border-radius: 5px;
     padding: 0 10px;
-    margin-bottom: 10px;
-    margin-top: 5%;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .input-introduction {
-    width: 300px;
     height: 100px;
-    border: 1px solid rgb(163, 156, 231);
-    border-radius: 5px;
-    padding: 0 10px;
-    margin-bottom: 10px;
 }
 
-/* 강아지 정보 수정 버튼 */
 #registerPuppyBut {
     background-color: rgb(163, 156, 231);
-    color : white;
+    color: white;
     width: 300px;
-    height:50px;
+    height: 50px;
     font-size: 20px;
     font-weight: bold;
-    border : none;
+    border: none;
     border-radius: 5px;
-    margin : 20px 0 20px 0; 
+    margin-top: 20px;
+    cursor: pointer;
 }
 
 #registerPuppyBut:hover {
     background-color: #f8d1dd;
+    transform: scale(1.05);
 }
-
 
 .neutering-container {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 모든 요소를 왼쪽으로 정렬 */
-    margin-bottom: 10px;
-    text-align: left;
-    color:dimgray;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-left: 30px;
 }
 
 .neutering {
-    margin-right: 30px; /* Adjust the space between the text and the radio buttons */
+    margin-right: 30px;
+    font-size: 16px;
 }
 
 .neutering-container label {
-    margin-right: 10px; /* Adjust the space between the radio buttons */
+    margin-right: 20px;
+    font-size: 16px;
 }
 
-/* 미디어 쿼리 */
 @media (max-width: 768px) {
-    h3 {
-      font-size: 1.5em;
+    .registerPuppyForm {
+        width: 95%;
+        margin-top: 10%;
     }
-  
-    .board-form {
-      padding: 10px;
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .input-puppy, .input-introduction {
+        width: 100%;
+    }
+
+    #registerPuppyBut {
+        width: 100%;
     }
 }
