@@ -7,6 +7,8 @@ import Main from './Main';
 // import Nav from './components/Nav';
 import CreateNote from './pages/CreateNote';
 import Note from './pages/Note';
+import NoteList from './pages/NoteList';
+import NoteView from './pages/NoteView';
 import CreateGallery from './pages/CreateGallery';
 import Gallery from './pages/Gallery';
 import GalleryView from './pages/GalleryView';
@@ -38,6 +40,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Main/>} />
               <Route path='/note' element={<Note/>}></Route>
+              <Route path='/noteList' element={<NoteList/>}></Route>
+              <Route path='/noteView/:id' element={<NoteView/>}></Route>
               <Route path='/gallery' element={<Gallery/>}></Route>
               <Route exact path='/galleryView/:id' element={<GalleryView/>}></Route>
               <Route path='/createGallery' element={<CreateGallery/>}></Route>

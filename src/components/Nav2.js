@@ -42,7 +42,7 @@ let Nav2 = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/note">알림장</Nav.Link>
+            <Nav.Link href="/noteList">알림장</Nav.Link>
             <Nav.Link href="/gallery">사진첩</Nav.Link>
             <Nav.Link href="/board">게시판</Nav.Link>
             <NavDropdown title="멍멍친구" id="collapsible-nav-dropdown">

@@ -1,0 +1,97 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useCookies } from "react-cookie";
+import Nav2 from '../components/Nav2';
+import '../css/NoteList.css';
+import { useNavigate } from 'react-router-dom';
+
+const NoteList = () => {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(['accessToken']);
+  const [notes, setNotes] = useState([]);
+
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const notesPerPage = 7;
+
+
+  useEffect(() => {
+    // 토큰으로 로그인 검증
+    if (!cookies.accessToken) {
+      alert('로그인 해주세요!');
+      navigate('/login');
+      return;
+    }
+    
+    // 로그인 O
+    axios.get('http://localhost:8082/api/v1/auth/y/note', {
+      headers: {
+        'Authorization': `Bearer ${cookies.accessToken}`
+      }
+    })
+      .then(response => {
+        // 역순으로 정렬하여 최신 노트가 위로 가도록 설정
+        const sortedNotes = response.data.sort((a, b) => b.id - a.id);
+        setNotes(sortedNotes);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the notes!', error);
+      });
+  }, [cookies.accessToken]);
+
+
+  // 페이지네이션
+  const indexOfLastNote = currentPage * notesPerPage;
+  const indexOfFirstNote = indexOfLastNote - notesPerPage;
+  const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+  // 알림장 상세보기
+  let handleClick = (id) => {
+    navigate(`/noteView/${id}`);
+  };
+
+
+  // 알림장 등록 버튼
+  let handleCreateNote = () => {
+    navigate('/createNote');
+  };
+
+  return (
+    <>
+      <div>
+        <Nav2 /> 
+      </div>  
+      <h3 style={{ textAlign: 'center', marginTop: '20px' }}>📝알림장</h3>
+
+      <div className="create-note-container">
+        <button className="create-note-button" onClick={handleCreateNote}>알림장 등록</button>
+      </div>
+      
+      <div className="note-list">
+        {currentNotes.length > 0 ? (
+          currentNotes.map((note, index) => (
+            <div className="note-item" key={note.id} onClick={() => handleClick(note.id)}>
+              <div className="note-id">🐾 {notes.length - (indexOfFirstNote + index)}</div>
+              <div className="note-date">📅 {note.noteDate}</div>
+              <div className="note-puppy">{note.puppyName}</div>
+            </div>
+          ))
+        ) : (
+          <div className="no-notes">등록된 알림장이 없습니다.</div>
+        )}
+      </div>
+      <div className="pagination">
+        {[...Array(Math.ceil(notes.length / notesPerPage)).keys()].map(number => (
+          <button key={number + 1} onClick={() => paginate(number + 1)} className="page-link">
+            {number + 1}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default NoteList;
