@@ -69,14 +69,14 @@ const NoteList = () => {
       <div className="create-note-container">
         <button className="create-note-button" onClick={handleCreateNote}>알림장 등록</button>
       </div>
-      
+
       <div className="note-list">
         {currentNotes.length > 0 ? (
           currentNotes.map((note, index) => (
             <div className="note-item" key={note.id} onClick={() => handleClick(note.id)}>
               <div className="note-id">🐾 {notes.length - (indexOfFirstNote + index)}</div>
               <div className="note-date">📅 {note.noteDate}</div>
-              <div className="note-puppy">{note.puppyName}</div>
+              <div className="note-puppy">🐶 {note.puppyName}</div>
             </div>
           ))
         ) : (
