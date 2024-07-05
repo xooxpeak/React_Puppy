@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Nav2 from '../components/Nav2';
 import '../css/Note.css';
 
-let CreateNote = () => {
-  let navigate = useNavigate();
-  let [cookies] = useCookies(['accessToken']);
-  let [puppies, setPuppies] = useState([]);
-  let [newNote, setNewNote] = useState({
+const CreateNote = () => {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(['accessToken']);
+  const [puppies, setPuppies] = useState([]);
+  const [newNote, setNewNote] = useState({
     noteDate: '',
     meal: '',
     poopFrequency: '',
@@ -34,8 +34,8 @@ let CreateNote = () => {
       });
   }, [cookies.accessToken]);
 
-  let handleInputChange = (event) => {
-    let { name, value } = event.target;
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
     setNewNote(prevState => ({
       ...prevState,
       [name]: value
@@ -43,7 +43,7 @@ let CreateNote = () => {
   };
 
   // 알림장 저장
-  let handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:8082/api/v1/auth/y/saveNote', newNote, {
       headers: {
@@ -60,10 +60,10 @@ let CreateNote = () => {
           daily: '',
           puppyId: ''
         });
-        console.log(response.data)
-        navigate('/noteList')
-        alert("알림장 등록 완료!")}
-        )
+        console.log(response.data);
+        navigate('/noteList');
+        alert("알림장 등록 완료!");
+      })
       .catch(error => {
         console.error('Error: ', error);
       });
@@ -74,7 +74,7 @@ let CreateNote = () => {
       <div>
         <Nav2 /> 
       </div>  
-      <h3 style={{ textAlign: 'center', marginTop: '20px' }}>📝알림장</h3>
+      <h3>📝알림장</h3>
 
       <form className="noteForm" onSubmit={handleSubmit}>
         <div className="section">
@@ -136,7 +136,7 @@ let CreateNote = () => {
 
           <fieldset>
             <legend>💜 오늘 하루는</legend>
-            <textarea name="daily" value={newNote.daily} onChange={handleInputChange}></textarea>
+            <textarea id="daily" name="daily" value={newNote.daily} onChange={handleInputChange}></textarea>
           </fieldset>
         </div>
         <button type="submit">작성하기</button>
