@@ -37,6 +37,14 @@ let GalleryList = (props) => {
 
     // AxiosInstance 사용 XX
     useEffect(() => {
+        // 토큰으로 로그인 검증
+        if (!cookies.accessToken) {
+            alert('로그인 해주세요!');
+            navigate('/login');
+            return;
+        }
+
+        // 로그인 O
         axios({
             url: `http://localhost:8082/api/v1/auth/y/gallery`,
             method: 'GET',
