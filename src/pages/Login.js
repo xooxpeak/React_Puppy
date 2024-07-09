@@ -67,6 +67,9 @@ let Login = () => {
             // 새로운 accessToken을 쿠키에 저장하고 상태도 업데이트
             setCookie('accessToken', response.data.accessToken, { path: '/' });
             setAccessToken(response.data.accessToken);
+
+            // 원래의 요청을 다시 시도
+            return response.data.accessToken;
         } catch (error) {
             console.log('error: ', error);
         }
@@ -76,28 +79,21 @@ let Login = () => {
 
 
         // 로그인 함수
-        let loginHandler = () => {
-
+        let loginHandler = async () => {
             // 아이디 또는 비밀번호가 비어 있는 경우
             if (!userId || !password) {
                 alert("아이디와 비밀번호를 모두 입력해주세요.");
                 return;
             }
-
-            // 로그인 요청 보내기
-            axios({
-                url: 'http://localhost:8082/api/v1/auth/n/login',
-                method: 'POST',
-                data: {
+    
+            try {
+                // 로그인 요청 보내기
+                let res = await axios.post('http://localhost:8082/api/v1/auth/n/login', {
                     userId: userId,
                     password: password
-                }
-            })
-            .then((res) => {
+                });
+    
                 // 로그인 성공
-                console.log(res.data)
-                console.log(res.status)
-
                 if (res.status === 200) {
                     // 서버로부터 받은 액세스 토큰을 쿠키에 저장
                     setCookie('accessToken', res.data.accessToken, { path: '/' });
@@ -105,25 +101,35 @@ let Login = () => {
                     // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
                     axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
                     alert("로그인 성공!");
-                    navigate("/");  // 메인페이지로 이동
-                    
-                }  else if (res.status === 401) {
+                    navigate("/"); // 메인페이지로 이동
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
                     // Access Token이 만료된 경우, Access Token 재발급 시도
-                    // retryLogin();
-                    refreshAccessToken();
+                    try {
+                        const newAccessToken = await refreshAccessToken();
+                        // 재발급 받은 새로운 액세스 토큰으로 원래 요청 재시도
+                        await axios.post('http://localhost:8082/api/v1/auth/n/login', {
+                            userId: userId,
+                            password: password
+                        }, {
+                            headers: {
+                                Authorization: `Bearer ${newAccessToken}`,
+                            }
+                        });
+                        navigate("/"); // 메인페이지로 이동
+                    } catch (refreshError) {
+                        alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+                        console.error("Refresh Error:", refreshError);
+                    }
                 } else {
                     // 로그인 실패
-                    console.log(res.status)
                     alert("아이디 또는 비밀번호가 잘못되었습니다.");
-                    
+                    console.error("Login Error:", error);
                 }
-            })
-            .catch((error) => {
-                // 서버 오류 또는 네트워크 오류
-                alert("로그인에 실패하였습니다.");
-                console.error("Error:", error);
-            });
-        }
+            }
+        };
+    
 
 
         // 로그아웃
@@ -151,9 +157,9 @@ let Login = () => {
                         <div className="input">
                             <input type="text" className="userId" id="userId" placeholder="아이디" value={userId} onChange={onUserIdHandler} autoFocus></input>
                             <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
-                            <button onClick={loginHandler}>Login</button>
+                            <button onClick={loginHandler} className="loginBut">Login</button>
                             <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
-                            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=http://localhost:8082/api/v1/auth/n/naverLogin&state=${encodeURIComponent(state)}`} className="naver-login-link"> 네이버 로그인</a>
+                            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=http://localhost:3000/login/oauth2/code/naver&state=${encodeURIComponent(state)}`} className="naver-login-link"> 네이버 로그인</a>
                             {/* <button onClick={naverLoginHandler} className="naver-login-link">네이버 로그인</button> */}
                         </div>
                         <div className="link">
