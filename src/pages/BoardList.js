@@ -37,7 +37,7 @@ let BoardList = () => {
                         <CommonTableRow key={index}>
                             <CommonTableColumn>{board.id}</CommonTableColumn>
                             <CommonTableColumn>
-                                <Link to={`/boardView/${board.id}`}>{board.title}</Link>
+                                <Link to={`/boardView/${board.id}`} className="board-title">{board.title}</Link>
                             </CommonTableColumn>
                             <CommonTableColumn>{board.board_date}</CommonTableColumn>
                             <CommonTableColumn>{board.user_Id}</CommonTableColumn>
