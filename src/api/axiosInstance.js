@@ -1,30 +1,72 @@
+import React, { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-// useAxiosWithAuth 함수 정의
 const AxiosInstance = () => {
-  const [cookies] = useCookies(['accessToken']);  // useCookies 훅을 사용하여 쿠키 상태를 가져옴
-  const accessToken = cookies.accessToken;  // 쿠키에서 accessToken 가져옴
+  const [cookies, setCookies, removeCookies] = useCookies(['accessToken', 'refreshToken']);  // useCookies 훅을 사용하여 쿠키 상태를 가져옴
   const navigate = useNavigate();
-  
+
+  useEffect(() => {
+    console.log('AxiosInstance - 쿠키에서 읽은 accessToken:', cookies.accessToken);
+    console.log('AxiosInstance - 쿠키에서 읽은 refreshToken:', cookies.refreshToken);
+  }, [cookies]);
+
+  const ensureValidAccessToken = async () => {
+    if (!cookies.accessToken) {
+        throw new Error("No access token available");
+    }
+
+    const tokenPayload = JSON.parse(atob(cookies.accessToken.split('.')[1]));
+    if (tokenPayload.exp * 1000 < Date.now()) {
+      console.log('Sending refreshToken:', cookies.refreshToken); // 여기서 확인
+
+            // Check if refreshToken is available
+            if (!cookies.refreshToken) {
+              console.error('No refresh token available');
+              throw new Error('No refresh token available');
+            }
+
+        const response = await axios.post('http://localhost:8082/api/v1/auth/n/refreshToken', {
+            refreshToken: cookies.refreshToken
+        }, {
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`
+            }
+        });
+        
+        setCookies('accessToken', response.data.accessToken, { path: '/' });
+        setCookies('refreshToken', response.data.refreshToken, { path: '/' });
+        return response.data.accessToken;
+    }
+    return cookies.accessToken;
+  };
+
   // axios 인스턴스 생성
   const axiosInstance = axios.create({
-    baseURL: 'http://172.30.1.74:3000/',  // 기본 URL
-    timeout: 1000,  // 타임아웃
+    headers: { "Content-Type": "application/json" },
+    baseURL: 'http://localhost:8082/',  // 기본 URL
+    withCredentials: true
   });
 
   // 요청 인터셉터
   axiosInstance.interceptors.request.use(
-    // 요청 전에 실행될 함수 정의
-    (config) => {
- //     const token = cookies.accessToken;  // 쿠키에서 accessToken 가져옴
-      if (accessToken) {  // accessToken이 존재하는 경우
-        config.headers.Authorization = `Bearer ${accessToken}`;  // 요청 헤더에 Authorization 속성을 추가하여 토큰을 포함
+    async (config) => {
+      if (!config.url.includes('/api/v1/auth/n/login')) {  // 로그인 요청이 아닌 경우에만 토큰 검증
+        try {
+          const token = await ensureValidAccessToken();  // 유효한 access token을 보장
+          console.log('Request token:', token);
+
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;  // 요청 헤더에 Authorization 속성을 추가하여 토큰을 포함
+          }
+        } catch (error) {
+          console.error('Error in request interceptor', error);
+          throw error;  // 오류를 던져서 요청을 중단
+        }
       }
       return config;  // 변경된 설정(config)을 반환
     },
-    // 요청에 대한 오류 처리 함수를 정의
     (error) => {
       console.error(error);
       return Promise.reject(error);  // 오류를 반환하여 프로미스 체인을 중단
@@ -33,16 +75,36 @@ const AxiosInstance = () => {
 
   // 응답 인터셉터
   axiosInstance.interceptors.response.use(
-    // 성공적인 응답 => 응답을 그대로 반환함
-    (response) => response,
-    // 요청에 대한 오류 처리 함수를 정의
-    (error) => {
+    (response) => {
+      return response;
+    },
+    async (error) => {
       const statusCode = error.response?.status;  // 오류 응답의 상태 코드 가져오기
       if (statusCode === 401) {  // 상태 코드가 401인 경우
         error.response.statusText = 'Unauthorized';  // 응답의 텍스트 상태를 'Unauthorized'로 설정
         error.response.status = 401;   // 응답의 상태 코드를 401로 설정
-        navigate('/');  // 메인페이지로 이동
+        try {
+          const { response } = await axios.post('http://localhost:8082/api/v1/auth/n/refreshToken', {}, {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${cookies.refreshToken}` }
+          });
+
+          const newAccessToken = response.data.accessToken;
+          setCookies('accessToken', newAccessToken, { path: '/' }); // 새로운 액세스 토큰을 쿠키에 저장
+          
+          // 헤더에 새로운 액세스 토큰 설정
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+          return axiosInstance(error.config); // 원래 요청 재시도
+        } catch (refreshError) {
+          console.error('Failed to refresh token', refreshError);
+          removeCookies('accessToken', { path: '/' });
+          removeCookies('refreshToken', { path: '/' });
+          navigate('/login'); // 로그인 페이지로 이동
+        }
       }
+      
       return Promise.reject(error);  // 오류를 반환하여 프로미스 체인을 중단
     }
   );

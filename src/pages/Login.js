@@ -2,177 +2,104 @@ import React, { useState, useEffect } from "react";
 import '../css/Login.css';
 import Nav2 from "../components/Nav2";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useAxios } from "../AxiosContext";
 
 const generateState = () => {
     return Math.random().toString(36).substring(2, 15);
 };
 
-let Login = () => {
+const Login = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
 
-        // let [cookies, setCookies, removeCookie] = useCookies(['accessToken']);
-        let [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
+    const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    const naverClientId = "OybP54NI6clQWNbhDnlm";
 
-        // accessToken과 refreshToken의 상태를 관리하기 위한 useState 훅 사용. 초기값은 쿠키에서 가져옴.
-        let [accessToken, setAccessToken] = useState(cookies.accessToken);
-        let [refreshToken, setRefreshToken] = useState(cookies.refreshToken);
+    const navigate = useNavigate();
+    const axios = useAxios();
 
-        // 아이디와 비밀번호
-        let [userId, setUserId] = useState("");
-        let [password, setPassword] = useState("");
+    useEffect(() => {
+        console.log("Updated cookies:", cookies);
+    }, [cookies]);
 
-        const kakaoAPI = process.env.REACT_APP_KAKAO_REST_API_KEY;
-        
-        // .env 사용하면 왜 안될까?
-        //const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID;
+    const onUserIdHandler = (e) => {
+        setUserId(e.target.value);
+        console.log("userId: ", e.target.value);
+    };
 
-        // .env 사용하지 않았더니 됨
-        const naverClientId = "OybP54NI6clQWNbhDnlm";
+    const onPasswordHandler = (e) => {
+        setPassword(e.target.value);
+        console.log("password: ", e.target.value);
+    };
 
-        let navigate = useNavigate();   // useNavigate 훅 사용
-
-
-        // 쿠키의 토큰들을 저장 & 상태를 업데이트 
-        useEffect(() => {
-            setAccessToken(cookies.accessToken);
-            setRefreshToken(cookies.refreshToken);
-        }, [cookies]);
-
-        let onUserIdHandler = (e) => {
-            setUserId(e.target.value)
-            console.log("userId: ", e.target.value);
+    const loginHandler = async () => {
+        if (!userId || !password) {
+            alert("아이디와 비밀번호를 모두 입력해주세요.");
+            return;
         }
 
-        let onPasswordHandler = (e) => {
-            setPassword(e.target.value)
-            console.log("password: ", e.target.value);
-        }
-
-
-    // accessToken을 갱신하기 위한 함수
-    let refreshAccessToken = async () => {
         try {
-            // 서버에 refreshToken을 보내고 새로운 accessToken을 받음
-            let response = await axios.post(
-                `http://localhost:8082/api/v1/auth/n/refreshToken`,
-                { refreshToken },  // 요청 본문에 refreshToken 포함
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
-            );
+            const res = await axios.post('http://localhost:8082/api/v1/auth/n/login', {
+                userId,
+                password
+            });
 
-            // 새로운 accessToken을 쿠키에 저장하고 상태도 업데이트
-            setCookie('accessToken', response.data.accessToken, { path: '/' });
-            setAccessToken(response.data.accessToken);
+            if (res.status === 200) {
+                console.log("Login response:", res.data);
 
-            // 원래의 요청을 다시 시도
-            return response.data.accessToken;
+                setCookie('accessToken', res.data.accessToken, { path: '/' });
+                setCookie('refreshToken', res.data.refreshToken, { path: '/' });
+
+                // 확인 로그
+                console.log("Received accessToken:", res.data.accessToken);
+                console.log("Received refreshToken:", res.data.refreshToken);
+                console.log("Updated cookies after set:", cookies);
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
+                alert("로그인 성공!");
+                navigate("/"); 
+            }
         } catch (error) {
-            console.log('error: ', error);
+            if (error.response && error.response.status === 401) {
+                alert("아이디 또는 비밀번호가 잘못되었습니다.");
+            } else {
+                console.error("Login Error:", error);
+                alert("로그인 중 오류가 발생했습니다.");
+            }
         }
     };
 
-
-
-
-        // 로그인 함수
-        let loginHandler = async () => {
-            // 아이디 또는 비밀번호가 비어 있는 경우
-            if (!userId || !password) {
-                alert("아이디와 비밀번호를 모두 입력해주세요.");
-                return;
-            }
-    
-            try {
-                // 로그인 요청 보내기
-                let res = await axios.post('http://localhost:8082/api/v1/auth/n/login', {
-                    userId: userId,
-                    password: password
-                });
-    
-                // 로그인 성공
-                if (res.status === 200) {
-                    // 서버로부터 받은 액세스 토큰을 쿠키에 저장
-                    setCookie('accessToken', res.data.accessToken, { path: '/' });
-                    setCookie('refreshToken', res.data.refreshToken, { path: '/' });
-                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
-                    alert("로그인 성공!");
-                    navigate("/"); // 메인페이지로 이동
-                }
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    // Access Token이 만료된 경우, Access Token 재발급 시도
-                    try {
-                        const newAccessToken = await refreshAccessToken();
-                        // 재발급 받은 새로운 액세스 토큰으로 원래 요청 재시도
-                        await axios.post('http://localhost:8082/api/v1/auth/n/login', {
-                            userId: userId,
-                            password: password
-                        }, {
-                            headers: {
-                                Authorization: `Bearer ${newAccessToken}`,
-                            }
-                        });
-                        navigate("/"); // 메인페이지로 이동
-                    } catch (refreshError) {
-                        alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-                        console.error("Refresh Error:", refreshError);
-                    }
-                } else {
-                    // 로그인 실패
-                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
-                    console.error("Login Error:", error);
-                }
-            }
-        };
-    
-
-
-        // 로그아웃
-        let logout = () => {
-            removeCookie('accessToken', { path: '/' });
-            removeCookie('refreshToken', { path: '/' });
-            axios.defaults.headers.common['Authorization'] = null;
-            navigate("/login");
-        }
-
-        const state = generateState();
-        localStorage.setItem("naver_state", state);
-
-        return (
-            <>
+    return (
+        <>
+            <div>
+                <Nav2/>
+            </div>
+            
+            <div className="loginForm">
                 <div>
-                    <Nav2/>
+                    <h3 id='login_title'>로그인</h3>
                 </div>
-                
-                <div className="loginForm">
-                    <div>
-                        <h3 id='login_title'>로그인</h3>
+                <div>
+                    <div className="input">
+                        <input type="text" className="userId" id="userId" placeholder="아이디" value={userId} onChange={onUserIdHandler} autoFocus />
+                        <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler} />
+                        <button onClick={loginHandler} className="loginBut">Login</button>
+                        <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
+                        <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=http://localhost:3000/login/oauth2/code/naver&state=${generateState()}`} className="naver-login-link"> 네이버 로그인</a>
                     </div>
-                    <div>
-                        <div className="input">
-                            <input type="text" className="userId" id="userId" placeholder="아이디" value={userId} onChange={onUserIdHandler} autoFocus></input>
-                            <input type="password" className="password" id="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
-                            <button onClick={loginHandler} className="loginBut">Login</button>
-                            <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoAPI}&redirect_uri=http://localhost:3000/login/oauth2/code/kakao`} className="kakao-login-link"> 카카오 로그인</a>
-                            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=http://localhost:3000/login/oauth2/code/naver&state=${encodeURIComponent(state)}`} className="naver-login-link"> 네이버 로그인</a>
-                            {/* <button onClick={naverLoginHandler} className="naver-login-link">네이버 로그인</button> */}
-                        </div>
-                        <div className="link">
-                            <NavLink to="/findId">아이디 찾기</NavLink>
-                            <span>&nbsp;|&nbsp;</span>
-                            <NavLink to="/findPw">비밀번호 찾기</NavLink>
-                            <span>&nbsp;|&nbsp;</span>
-                            <NavLink to="/register">회원가입</NavLink>
-                        </div>
+                    <div className="link">
+                        <NavLink to="/findId">아이디 찾기</NavLink>
+                        <span>&nbsp;|&nbsp;</span>
+                        <NavLink to="/findPw">비밀번호 찾기</NavLink>
+                        <span>&nbsp;|&nbsp;</span>
+                        <NavLink to="/register">회원가입</NavLink>
                     </div>
                 </div>
-            </>
-        );
-    }
+            </div>
+        </>
+    );
+};
 
 export default Login;
