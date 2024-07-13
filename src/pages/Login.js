@@ -50,12 +50,14 @@ const Login = () => {
                 console.log("Login response:", res.data);
 
                 setCookie('accessToken', res.data.accessToken, { path: '/' });
-                setCookie('refreshToken', res.data.refreshToken, { path: '/' });
 
                 // 확인 로그
                 console.log("Received accessToken:", res.data.accessToken);
-                console.log("Received refreshToken:", res.data.refreshToken);
-                console.log("Updated cookies after set:", cookies);
+
+                               // 바로 쿠키가 반영되지 않는 경우를 위해 확인 로그 추가
+                setTimeout(() => {
+                    console.log("Updated cookies after setTimeout:", cookies);
+                }, 1000);
 
                 axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
                 alert("로그인 성공!");

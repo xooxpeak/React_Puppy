@@ -4,12 +4,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const useAxiosInstance = () => {
-  const [cookies, setCookies, removeCookies] = useCookies(['accessToken', 'refreshToken']);
+  const [cookies, setCookies, removeCookies] = useCookies(['accessToken']);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log('AxiosInstance - 쿠키에서 읽은 accessToken:', cookies.accessToken);
-    console.log('AxiosInstance - 쿠키에서 읽은 refreshToken:', cookies.refreshToken);
   }, [cookies]);
 
   // const ensureValidAccessToken = async () => {
@@ -85,7 +84,6 @@ const useAxiosInstance = () => {
       }
     );
 
-
   // 응답 인터셉터
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -99,7 +97,6 @@ const useAxiosInstance = () => {
         try {
           const response = await axios.post('http://localhost:8082/api/v1/auth/n/refreshToken', {
             accessToken: cookies.accessToken,
-            refreshToken: cookies.refreshToken
           }, {
             withCredentials: true,
           });
@@ -115,7 +112,6 @@ const useAxiosInstance = () => {
         } catch (refreshError) {
           console.error('Failed to refresh token', refreshError);
           removeCookies('accessToken', { path: '/' });
-          removeCookies('refreshToken', { path: '/' });
           navigate('/login'); // 로그인 페이지로 이동
         }
       }
