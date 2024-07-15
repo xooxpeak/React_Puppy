@@ -4,13 +4,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useCookies } from "react-cookie";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import Puppy from "../pages/Puppy";
+import { useNavigate } from "react-router-dom";
+import { useAxios } from '../AxiosContext';
 
 let Nav2 = () => {
 
   let navigate = useNavigate(); 
+  const axios = useAxios(); 
+  
 
   let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);  // 쿠키 관리
   let [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -27,11 +28,25 @@ let Nav2 = () => {
 
     // 로그아웃 함수
     const handleLogout = () => {
-      // 쿠키에서 accessToken 제거
-      removeCookies('accessToken', { path: '/' });
+      // 서버에 로그아웃 요청을 보내기
+      axios.post('http://localhost:8082/api/v1/auth/n/logout', {}, {
+        headers: {
+          'Authorization': 'Bearer ' + cookies.accessToken
+        }
+      })
+      .then(() => {
+        console.log("로그아웃 성공!");
+        // 쿠키에서 accessToken 제거
+        removeCookies('accessToken', { path: '/' });
+        setIsLogin(false);  // 로그인 상태 업데이트
+        navigate("/login");
+    })
+    .catch((error) => {
+        console.log("로그아웃 실패:", error);
+    });
+
       // 로그인 상태 변경
-      setIsLogin(false);
-      navigate("/login");
+      //navigate("/login");
   };
 
 
