@@ -5,12 +5,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { useAxios } from '../AxiosContext';
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 let Nav2 = () => {
-
+  
   let navigate = useNavigate(); 
-  const axios = useAxios(); 
+  const axios = useAxios(); // Axios 인스턴스 사용
   
 
   let [cookies, setCookies, removeCookies] = useCookies(['accessToken']);  // 쿠키 관리
@@ -26,28 +26,23 @@ let Nav2 = () => {
   }, [cookies.accessToken]);
 
 
-    // 로그아웃 함수
-    const handleLogout = () => {
-      // 서버에 로그아웃 요청을 보내기
-      axios.post('http://localhost:8082/api/v1/auth/n/logout', {}, {
-        headers: {
-          'Authorization': 'Bearer ' + cookies.accessToken
-        }
-      })
-      .then(() => {
+  // 로그아웃 함수
+  const handleLogout = async () => {
+    try {
+        // 로그아웃 요청
+        await axios.post('/api/v1/auth/n/logout');
+
         console.log("로그아웃 성공!");
-        // 쿠키에서 accessToken 제거
         removeCookies('accessToken', { path: '/' });
         setIsLogin(false);  // 로그인 상태 업데이트
         navigate("/login");
-    })
-    .catch((error) => {
-        console.log("로그아웃 실패:", error);
-    });
 
-      // 로그인 상태 변경
-      //navigate("/login");
-  };
+    } catch (error) {
+        console.log("토큰 만료 또는 로그아웃 실패", error);
+    }
+};
+
+
 
 
   return (
