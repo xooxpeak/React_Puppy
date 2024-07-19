@@ -8,6 +8,10 @@ const StoreList = () => {
     const [cookies] = useCookies(["accessToken"]);
     const [dataList, setDataList] = useState([]);
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    const [storesPerPage] = useState(8); // 페이지당 유치원 수 설정
+
     useEffect(() => {
         // 유치원 목록 불러오는 API
         axios.get('http://localhost:8082/api/v1/auth/y/store', {
@@ -23,6 +27,19 @@ const StoreList = () => {
             console.log("Error: ", error);
         });
     }, [cookies.accessToken]);
+
+    // 현재 페이지에 해당하는 유치원 목록 계산
+    const indexOfLastStore = currentPage * storesPerPage;
+    const indexOfFirstStore = indexOfLastStore - storesPerPage;
+    const currentStores = dataList.slice(indexOfFirstStore, indexOfLastStore);
+
+    // 페이지 번호 계산
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataList.length / storesPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);    
 
     return (
         <>
@@ -59,6 +76,13 @@ const StoreList = () => {
                 ) : (
                     <p style={{ textAlign: 'center' }}>등록된 유치원이 없습니다.</p>
                 )}
+            </div>
+            <div className="pagination">
+                {pageNumbers.map(number => (
+                    <button key={number} onClick={() => paginate(number)} className="page-link">
+                        {number}
+                    </button>
+                ))}
             </div>
         </>
     )
