@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useCookies } from "react-cookie";
-import AxiosInstance from "../api/AxiosInstance";
 import '../css/GalleryList.css'
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
-let GalleryList = (props) => {
+let GalleryList = () => {
 
-    let [cookies] = useCookies(['accessToken']);
+    const [cookies] = useCookies(['accessToken']);
     let [dataList, setDataList] = useState([]);
     let [imageMap, setImageMap] = useState({}); // 이미지 데이터를 저장할 상태 변수
+    
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    const [galleriesPerPage] = useState(9); // 페이지 당 표시할 갤러리 수 설정
+    
     let navigate = useNavigate();
+    const axios = useAxios(); // Axios 인스턴스 사용
 
     // AxiosInstance 사용 => default.get is not a function 오류
     // useEffect(() => {
@@ -38,23 +42,17 @@ let GalleryList = (props) => {
     // AxiosInstance 사용 XX
     useEffect(() => {
         // 토큰으로 로그인 검증
-        if (!cookies.accessToken) {
-            alert('로그인 해주세요!');
-            navigate('/login');
-            return;
-        }
+        // if (!cookies.accessToken) {
+        //     alert('로그인 해주세요!');
+        //     navigate('/login');
+        //     return;
+        // }
 
         // 로그인 O
-        axios({
-            url: `http://localhost:8082/api/v1/auth/y/gallery`,
-            method: 'GET',
-            headers: {
-                'Authorization' : 'Bearer '+ cookies.accessToken
-              }
-        })
+        axios.get('/api/v1/auth/y/gallery')
         .then((res) => {
-            console.log(res.data)
-            if (res.status === 200) {
+           // console.log(res.data)
+           // if (res.status === 200) {
                 console.log("이미지 불러오기 성공")
                 setDataList(res.data); // 응답 데이터 설정
                 // 각 이미지 데이터를 요청하여 상태로 저장
@@ -63,27 +61,20 @@ let GalleryList = (props) => {
                         setImageMap(prevState => ({ ...prevState, [data.id]: imageSrc }));
                     });
                 });
-            }
+          //  }
         })
         .catch((error) => {
-            alert("이미지 불러오기 실패");
-            console.error("Error:", error);
+            console.error("토큰 갱신 or Error:", error);
         });
-    }, []); // 의존성 배열을 빈 배열로 전달하여 최초 렌더링 시에만 실행되도록 설정
+    }, [axios]);
 
 
     // 이미지 URL을 가져오는 requestImage 함수
     let requestImage = async (imageId) => {
         try {
-            const res = await axios({
-                url: `http://localhost:8082/api/v1/auth/y/galleryView?id=${imageId}`,
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + cookies.accessToken
-                },
+            const res = await axios.get(`/api/v1/auth/y/galleryView?id=${imageId}`, {
                 responseType: 'arraybuffer'  // 바이트 배열로 응답 받기
             });
-            
             const base64 = btoa(
                 new Uint8Array(res.data)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
@@ -101,62 +92,52 @@ let GalleryList = (props) => {
 
     
     // 사진첩 삭제
-    let deleteGallery = (id) => {
-        axios({
-            url: `http://localhost:8082/api/v1/auth/y/gallery?id=${id}`,
-            method: 'DELETE',
-            headers: {
-                'Authorization' : 'Bearer '+ cookies.accessToken
-              }
-        })
+    // let deleteGallery = (id) => {
+    //     axios({
+    //         url: `http://localhost:8082/api/v1/auth/y/gallery?id=${id}`,
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Authorization' : 'Bearer '+ cookies.accessToken
+    //           }
+    //     })
+    //     .then((res) => {
+    //         console.log("갤러리 삭제 성공");
+    //         alert("해당 사진을 삭제하였습니다.")
+    //         // fetchData();
+    //         // 갤러리 목록 갱신
+    //         setDataList(res.data); // 응답 데이터 설정
+    //     })
+    //     .catch((error) => {
+    //         console.log("Error:", error);
+    //         alert("갤러리 삭제 실패!")
+    //     });
+    // };
+    const deleteGallery = (id) => {
+        axios.delete(`/api/v1/auth/y/deleteGallery?id=${id}`)
         .then((res) => {
             console.log("갤러리 삭제 성공");
-            alert("해당 사진을 삭제하였습니다.")
-            // fetchData();
-            // 갤러리 목록 갱신
-            setDataList(res.data); // 응답 데이터 설정
+            alert("해당 사진을 삭제하였습니다.");
+            setDataList(dataList.filter(gallery => gallery.id !== id)); // 삭제된 갤러리 제외
         })
         .catch((error) => {
             console.log("Error:", error);
-            alert("갤러리 삭제 실패!")
+            alert("갤러리 삭제 실패!");
         });
     };
-   
-    // 부트스트랩 사용 버전
-    // return (
-    //     <>
-    //     <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>📷사진첩</strong></h3>
-    //         <Container>
-    //             {dataList.length > 0 ? (
-    //             <Row className="justify-content-center">
-    //                 {dataList.slice(0, 6).map((data, index) => (
-    //                     <Col key={index} md={4}>
-    //                         <Card style={{ width: '18rem', marginBottom: '20px' }}>
-    //                             <Card.Img variant="top" src={`${data.gall_img}`} alt="Gallery Image"/>
-    //                             <Card.Body>
-    //                                 <Card.Title>{`${data.gall_date}`}</Card.Title>
-    //                                 <Card.Text>
-    //                                     {`${data.fileName}`}
-    //                                 </Card.Text>
-    //                                 <Button variant="primary" href={`/galleryView/${data.id}`}>상세보기</Button>
-    //                             </Card.Body>
-    //                         </Card>
-    //                     </Col>
-    //                 ))}
-    //             </Row>
-    //             ) : (
-    //                 <div style={{ textAlign: 'center', marginTop: '50px' }}>
-    //                     <h3>아직 작성된 이미지가 없습니다🙄</h3>
-    //                 </div>
-    //             )}
-    //         </Container>
-    //         <div className="button-container">
-    //         <div className="button-wrapper">
-    //             <button className="creat-board-btn" onClick={createGallery}>📝작성하기</button>
-    //         </div>
-    //     </div>
-    //     </>
-    // );
+
+    // 현재 페이지에 해당하는 갤러리 목록을 계산
+    const indexOfLastGallery = currentPage * galleriesPerPage;
+    const indexOfFirstGallery = indexOfLastGallery - galleriesPerPage;
+    const currentGalleries = dataList.slice(indexOfFirstGallery, indexOfLastGallery);
+    
+    // 페이지 번호를 계산
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataList.length / galleriesPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
     // 부트스트랩 사용 xx
     return (
@@ -169,7 +150,7 @@ let GalleryList = (props) => {
                             <div key={index} className="col-md-4">
                                 <div className="card">
                                     {imageMap[data.id] ? (
-                                        <img className="card-img-top" src={imageMap[data.id]} alt="Gallery Image"/>
+                                        <img className="gall-card-img" src={imageMap[data.id]} alt="Gallery Image"/>
                                     ) : (
                                         <div>Loading...</div>
                                     )}
@@ -191,6 +172,13 @@ let GalleryList = (props) => {
                         <h3>아직 작성된 이미지가 없습니다🙄</h3>
                     </div>
                 )}
+            </div>
+            <div className="pagination">
+                {pageNumbers.map(number => (
+                    <button key={number} onClick={() => paginate(number)} className="page-link">
+                        {number}
+                    </button>
+                ))}
             </div>
             <div className="button-container">
                 <div className="button-wrapper">
