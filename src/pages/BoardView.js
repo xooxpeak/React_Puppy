@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCookies } from "react-cookie";
 import '../css/Board.css'
-import axios from "axios";
 import Nav2 from "../components/Nav2.js";
 import Comment from './Comment'; // Comment 컴포넌트 임포트
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 let BoardView = () => {
     let { id } = useParams();  // URL 파라미터에서 게시글 ID를 가져옴
@@ -13,48 +13,9 @@ let BoardView = () => {
     let [isLiked, setIsLiked] = useState(false);  // 좋아요 여부 상태
     let [cookies] = useCookies(['accessToken', 'user_id']);
     let navigate = useNavigate();
+    const axios = useAxios(); // Axios 인스턴스 사용
 
     // 특정 게시글의 상세 정보를 불러오는 API 호출
-    // Promise를 사용하는 방식
-    // useEffect(() => {
-    //     axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
-    //         headers: {
-    //             'Authorization': 'Bearer ' + cookies.accessToken
-    //         }
-    //     })
-    //     .then((res) => {
-    //         // console.log("게시글 상세 조회 성공!");
-    //         // console.log(res.data);
-    //         // const selectedBoard = res.data.find(item => item.id == id); // ID에 해당하는 글 찾기
-    //         // console.log(selectedBoard);
-    //         // setBoard(selectedBoard);
-
-    //         // //TODO: isAuthor = false 이슈 해결
-    //         // console.log(res.data.isAuthor);
-    //         // setIsAuthor(res.data.isAuthor);
-
-    //         console.log("게시글 상세 조회 성공!");
-    //         console.log(res.data);
-    //         const selectedBoard = res.data.boardDetail; // API 응답 구조에 따라 수정
-    //         setBoard(res.data);
-    //         console.log(res.data.isAuthor);
-    //         setIsAuthor(res.data.isAuthor); // isAuthor 값 설정
-    //     })
-    //     .catch((error) => {
-    //         console.log("Error:", error);
-    //     });
-    // }, [id, cookies.accessToken]);
-
-
-    //     // 로그인 되지 않았을 경우
-    // if (!cookies.accessToken) {
-    //     alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-    //     navigate("/login");
-    //     return null;
-    // }
-
-
-    // async/await를 사용하는 방식
     useEffect(() => {
         // 로그인 되지 않았을 경우
         if (!cookies.accessToken) {
@@ -66,11 +27,7 @@ let BoardView = () => {
         // 로그인이 되어 있을 때 게시글 상세 정보를 불러오는 API 호출
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8082/api/v1/auth/n/board?id=${id}`, {
-                    headers: {
-                        'Authorization': 'Bearer ' + cookies.accessToken
-                    }
-                });
+                const response = await axios.get(`/api/v1/auth/n/board?id=${id}`);
 
                 const { data } = response;  // axios로부터 받은 응답(response)객체에서 data 속성을 추출하여 data에 할당
                 
@@ -90,7 +47,7 @@ let BoardView = () => {
         // 클린업 함수를 반환
         return () => {
         };
-    }, [id, cookies.accessToken, navigate]);
+    }, [id, cookies.accessToken, axios]);
 
     
     // 이전 페이지로 돌아가기
@@ -108,11 +65,7 @@ let BoardView = () => {
 
     // 게시글 삭제
     let del = () => {
-        axios.delete(`http://localhost:8082/api/v1/auth/n/deleteBoard?id=${id}`, {
-            headers: {
-                'Authorization': 'Bearer ' + cookies.accessToken
-                    }
-            })
+        axios.delete(`/api/v1/auth/n/deleteBoard?id=${id}`)
             .then(() => {
                 console.log("게시글 삭제 성공!");
                 alert("게시글을 삭제하였습니다 🗑️")
@@ -127,13 +80,8 @@ let BoardView = () => {
     // 좋아요
     let like = async () => {
         try {
-            let res = await axios.post(`http://localhost:8082/api/v1/auth/y/userLike/${board.id}`, {}, {
-                headers: {
-                    'Authorization': 'Bearer ' + cookies.accessToken,
-                }
+            let res = await axios.post(`/api/v1/auth/y/userLike/${board.id}`);
                 
-            });
-
             let { data } = res;
 
             if(data.code === "200") {
@@ -150,7 +98,6 @@ let BoardView = () => {
         } catch (error) {
             console.error("Error: ", error);
         }
-
     };
 
     return(
@@ -161,7 +108,6 @@ let BoardView = () => {
         {/* <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>개시판🐶</strong></h3> */}
         <div className="board-view-title-box">
             <div className="board-view-title">
-                {/* {board.title} */}
                 {board ? board.title : '해당 게시글을 찾을 수 없습니다.'}
             </div>
         </div>
@@ -195,7 +141,6 @@ let BoardView = () => {
                                 <label>내용</label>
                                 <div>
                                     {board.content}
-                                    {/* <img src={board.content} alt="게시글 이미지" /> */}
                                 </div>
                             </div>
 

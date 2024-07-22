@@ -4,7 +4,7 @@ import CommonTable from '../components/table/CommonTable.js';
 import CommonTableColumn from '../components/table/CommonTableColumn.js';
 import CommonTableRow from '../components/table/CommonTableRow.js';
 import '../css/Board.css';
-import axios from "axios";
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 let BoardList = () => {
     let [dataList, setDataList] = useState([]);
@@ -13,11 +13,13 @@ let BoardList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(10); // 페이지 당 게시글 수 설정
 
+    const axios = useAxios(); // Axios 인스턴스 사용
+
     useEffect(() => {
         // 게시글 목록을 불러오는 API
-        axios.get('http://localhost:8082/api/v1/auth/n/board')
+        axios.get('/api/v1/auth/n/board')
         .then((res) => {
-            console.log("게시글 전체 목록 조회 성공!")
+            console.log("게시글 전체 목록 조회 성공!");
             // 최신글이 가장 위로 오도록 역순으로 정렬
             const sortedData = res.data.sort((a, b) => b.id - a.id);
             setDataList(sortedData);
@@ -25,7 +27,7 @@ let BoardList = () => {
         .catch((error) => {
             console.log("Error:", error);
         });
-    }, []);
+    }, [axios]);
 
     let createBoard = () => {
         navigate('/createBoard');
@@ -50,7 +52,7 @@ let BoardList = () => {
 
         <CommonTable headersName={['글번호', '제목', '등록일', '작성자', '👀조회수', '🖤좋아요']}>
             {
-                dataList ? dataList.map((board, index) => {
+                currentPosts ? currentPosts.map((board, index) => {
                     return (
                         <CommonTableRow key={index}>
                             <CommonTableColumn>{dataList.length - (indexOfFirstPost + index)}</CommonTableColumn>
@@ -63,7 +65,7 @@ let BoardList = () => {
                             <CommonTableColumn>{board.user_like}</CommonTableColumn>
                         </CommonTableRow>
                     )
-                }) : ''    // 삼항 연산자를 사용해 boardList가 존재하는 경우에만 데이터를 매핑하여 테이블 행 생성
+                }) : ''    // 삼항 연산자를 사용해 currentPosts가 존재하는 경우에만 데이터를 매핑하여 테이블 행 생성
                             // 그렇지 않은 경우에는 빈 문자열('') 반환
             }
         </CommonTable>
