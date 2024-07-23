@@ -1,32 +1,27 @@
 import React from 'react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useCookies } from "react-cookie";
-import { Placeholder } from 'react-bootstrap';
+import { useAxios } from '../AxiosContext';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 let Comment = ({ id }) => {
     let [newComment, setNewComment] = useState('');
     let [comments, setComments] = useState([]);
-    let [cookies, setCookie] = useCookies(['accessToken', 'user_id']);
+    const axios = useAxios(); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchComments();
-    }, []);
+    }, [axios]);
 
     let fetchComments = async () => {
         try {
             let response = await axios.get(
-                `http://localhost:8082/api/v1/auth/n/comment/${id}`,
-                {
-                    headers: {
-                        'Authorization': 'Bearer ' + cookies.accessToken
-                    }
-                }
+                `/api/v1/auth/n/comment/${id}`
             );
             setComments(response.data);
         } catch (error) {
-            console.error("Error fetching comments:", error);
+            console.error("Error: ", error);
         }
     };
 
@@ -38,20 +33,14 @@ let Comment = ({ id }) => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8082/api/v1/auth/n/saveComment/${id}`,
-                commentData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + cookies.accessToken
-                    }
-                }
+                `/api/v1/auth/n/saveComment/${id}`, commentData
             );
 
             setComments([...comments, { ...commentData, id: response.data }]);
             setNewComment('');
             console.log('Comment saved:', response.data);
             alert('댓글이 성공적으로 작성되었습니다.');
+            navigate('/Board');
         } catch (error) {
             console.error("Error saving comment:", error);
             alert('댓글 작성 중 오류가 발생했습니다.');
