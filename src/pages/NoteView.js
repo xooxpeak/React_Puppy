@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useCookies } from "react-cookie";
 import { useParams } from 'react-router-dom';
 import Nav2 from '../components/Nav2';
 import '../css/Note.css';
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 const NoteView = () => {
   const [cookies] = useCookies(['accessToken']);
   const { id } = useParams();
   const [note, setNote] = useState(null);
+  const axios = useAxios(); // Axios 인스턴스 사용
 
+// 알림장 상세보기
   useEffect(() => {
-    axios.get(`http://localhost:8082/api/v1/auth/y/noteDetail/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${cookies.accessToken}`
-      }
-    })
+    axios.get(`/api/v1/auth/y/noteDetail/${id}`)
       .then(response => {
         setNote(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the note!', error);
       });
-  }, [id, cookies.accessToken]);
+  }, [id, axios]);
 
+// 알림장 존재하지 않을 경우 로딩 표시
   if (!note) {
     return <div>Loading...</div>;
   }

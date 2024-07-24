@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Nav2 from '../components/Nav2';
 import '../css/Note.css'; 
+import { useAxios } from '../AxiosContext';   // Axios 인스턴스 가져오기
 
 let Note = () => {
+
+  const axios = useAxios();  // Axios 인스턴스 사용
 
   let [note, setNote] = useState({
     meal: '',

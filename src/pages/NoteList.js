@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useCookies } from "react-cookie";
 import Nav2 from '../components/Nav2';
 import '../css/NoteList.css';
 import { useNavigate } from 'react-router-dom';
+import { useAxios } from '../AxiosContext';   // Axios 인스턴스 가져오기
+
 
 const NoteList = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies(['accessToken']);
+  const axios = useAxios();  // Axios 인스턴스 사용
+  const [cookies] = useCookies('accessToken');
   const [notes, setNotes] = useState([]);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
   const notesPerPage = 7;
 
-
-  useEffect(() => {
-    // 토큰으로 로그인 검증
-    if (!cookies.accessToken) {
-      alert('로그인 해주세요!');
-      navigate('/login');
-      return;
-    }
+    // 로그인 X
+    useEffect(() => {
+      // 토큰으로 로그인 검증
+      if (!cookies.accessToken) {
+        alert('로그인 해주세요!');
+        navigate('/login');
+        return;
+      }
     
     // 로그인 O
-    axios.get('http://localhost:8082/api/v1/auth/y/note', {
-      headers: {
-        'Authorization': `Bearer ${cookies.accessToken}`
-      }
-    })
+    // AxiosInstace 사용 o
+    axios.get('/api/v1/auth/y/note')
       .then(response => {
         // 역순으로 정렬하여 최신 노트가 위로 가도록 설정
         const sortedNotes = response.data.sort((a, b) => b.id - a.id);
         setNotes(sortedNotes);
       })
       .catch(error => {
-        console.error('There was an error fetching the notes!', error);
+        console.error('Error: ', error);
       });
-  }, [cookies.accessToken]);
+  }, [axios]);
 
 
   // 페이지네이션

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Nav2 from '../components/Nav2';
 import '../css/Note.css';
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 const CreateNote = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies(['accessToken']);
   const [puppies, setPuppies] = useState([]);
   const [newNote, setNewNote] = useState({
     noteDate: '',
@@ -19,20 +17,18 @@ const CreateNote = () => {
     puppyId: ''
   });
 
+  const axios = useAxios(); // Axios 인스턴스 사용
+
   // 강아지 전체 목록 불러오기
   useEffect(() => {
-    axios.get('http://localhost:8082/api/v1/auth/y/puppies', {
-      headers: {
-        'Authorization': `Bearer ${cookies.accessToken}`
-      }
-    })
+    axios.get('/api/v1/auth/y/puppies')
       .then(response => {
         setPuppies(response.data);
       })
       .catch(error => {
         console.error('강아지 목록 불러오기 오류!', error);
       });
-  }, [cookies.accessToken]);
+  }, [axios]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -45,11 +41,7 @@ const CreateNote = () => {
   // 알림장 저장
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8082/api/v1/auth/y/saveNote', newNote, {
-      headers: {
-        'Authorization': `Bearer ${cookies.accessToken}`
-      }
-    })
+    axios.post('/api/v1/auth/y/saveNote', newNote)
       .then((response) => {
         setNewNote({
           noteDate: '',
