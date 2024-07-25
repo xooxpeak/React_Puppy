@@ -5,6 +5,7 @@ import CommonTableColumn from '../components/table/CommonTableColumn.js';
 import CommonTableRow from '../components/table/CommonTableRow.js';
 import '../css/Board.css';
 import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 let BoardList = () => {
     let [dataList, setDataList] = useState([]);
@@ -48,7 +49,7 @@ let BoardList = () => {
    
     return(
         <>
-        <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>개시판🐶</strong></h3>
+        <h3 style={{textAlign: 'center', marginTop: '20px'}}><strong>게시판🐶</strong></h3>
 
         <CommonTable headersName={['글번호', '제목', '등록일', '작성자', '👀조회수', '🖤좋아요']}>
             {
@@ -70,12 +71,16 @@ let BoardList = () => {
             }
         </CommonTable>
 
-        <div className="pagination">
-            {pageNumbers.map(number => (
-                <button key={number} onClick={() => paginate(number)} className="page-link">
-                    {number}
-                </button>
-            ))}
+        <div className="d-flex justify-content-center">
+            <ul className="pagination">
+                {pageNumbers.map(number => (
+                    <li key={number} className="page-item">
+                        <button onClick={() => paginate(number)} className="page-link">
+                            {number}
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
         
         <div className="button-container">
@@ -84,7 +89,6 @@ let BoardList = () => {
             </div>
         </div>
         </>
-        
     );
 }
 

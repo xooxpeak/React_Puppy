@@ -1,130 +1,127 @@
-  @font-face {
-    font-family: 'SUIT-Medium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  * {
-    font-family: 'SUIT-Medium';
-  }
-
-
-  .board-view-title-box {
-    background-color: rgba(201, 128, 225, 0.3); 
-    padding: 20px; 
-    border-radius: 10px; 
-    text-align: center; 
-    max-width: 63%; 
-    max-height: auto;
-    margin: 30px auto 0; 
-    overflow: auto; /* 내용이 넘치는 경우 스크롤 표시 */
-  }
-
-  .board-view-title {
-      font-size: 30px;
-      font-weight: bold;
-  }
-
-  .board-view-wrapper {
-    width: 60%;
-    margin: 0 auto;
-  }
-
-  
-  .board-view-go-list-btn {
-    width: auto; 
-    height: auto;
-    border: none;
-    padding: 10px;
-    background-color: rgb(201, 128, 225);
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 20px; 
-    margin-bottom: 20px;
-    justify-content: center; 
+@font-face {
+  font-family: 'SUIT-Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
-  .board-view-go-list-btn:hover {
-    background-color: #ffb3b3;
-}
-  
-  .board-view-row {
-    margin: 10px 0;
-    display: flex;
-  }
-  
-  .board-view-row > label:first-child {
-    margin: 10px 0;
-    width: 30%;
-    font-weight: bold;
-  }
-  
-  .board-view-row > *:nth-child(2) {
-    margin: 10px 0;
-    width: 70%;
-  }
-
-  .button-container {
-    display: flex; 
-    justify-content: center; 
-    margin-bottom: 20px;
-    margin-top: 50px;
-    max-width: 63;
-  }
-
-  .button-wrapper {
-    width: 10%; 
-    text-align: center; 
+* {
+  font-family: 'SUIT-Medium';
 }
 
-  .creat-board-btn {
-    background-color: rgb(201, 128, 225);
-    color: white;
-    width: auto;
-    height: auto;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .creat-board-btn:hover {
-    background-color: #ffb3b3;
-  }
-
-  .edit-del-button-container {
-    display: flex; 
-    justify-content: center; 
-    margin-top: 50px;
-  }
-
-  .board-view-edit-btn {
-    width: 100px;
-    height: auto;
-  }
-
-  .board-view-edit-btn:hover {
-    background-color: #ffb3b3;
-  }
-
-  .board-view-delete-btn {
-    width: 100px;
-    height: auto;
-    background-color: white;
-    color: rgb(163, 156, 231);
-    border: 1px solid rgb(163, 156, 231);
-  }
-
-  .board-view-delete-btn:hover {
-    background-color: #ffb3b3;
-  }
-
-  .button-gap {
-    margin-right: 10px; 
+.board-view-title-box {
+  background-color: rgba(201, 128, 225, 0.3); 
+  padding: 20px; 
+  border-radius: 10px; 
+  text-align: center; 
+  max-width: 63%; 
+  max-height: auto;
+  margin: 30px auto 0; 
+  overflow: auto; /* 내용이 넘치는 경우 스크롤 표시 */
 }
 
+.board-view-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.board-view-wrapper {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.board-view-go-list-btn {
+  width: auto; 
+  height: auto;
+  border: none;
+  padding: 10px;
+  background-color: rgb(201, 128, 225);
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px; 
+  margin-bottom: 20px;
+  justify-content: center; 
+}
+
+.board-view-go-list-btn:hover {
+  background-color: #ffb3b3;
+}
+
+.board-view-row {
+  margin: 10px 0;
+  display: flex;
+}
+
+.board-view-row > label:first-child {
+  margin: 10px 0;
+  width: 30%;
+  font-weight: bold;
+}
+
+.board-view-row > *:nth-child(2) {
+  margin: 10px 0;
+  width: 70%;
+}
+
+.button-container {
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 20px;
+  margin-top: 50px;
+  max-width: 63;
+}
+
+.button-wrapper {
+  width: 10%; 
+  text-align: center; 
+}
+
+.creat-board-btn {
+  background-color: rgb(201, 128, 225);
+  color: white;
+  width: auto;
+  height: auto;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.creat-board-btn:hover {
+  background-color: #ffb3b3;
+}
+
+.edit-del-button-container {
+  display: flex; 
+  justify-content: center; 
+  margin-top: 50px;
+}
+
+.board-view-edit-btn {
+  width: 100px;
+  height: auto;
+}
+
+.board-view-edit-btn:hover {
+  background-color: #ffb3b3;
+}
+
+.board-view-delete-btn {
+  width: 100px;
+  height: auto;
+  background-color: white;
+  color: rgb(163, 156, 231);
+  border: 1px solid rgb(163, 156, 231);
+}
+
+.board-view-delete-btn:hover {
+  background-color: #ffb3b3;
+}
+
+.button-gap {
+  margin-right: 10px; 
+}
 
 /* 좋아요 */
 .like-button-container {
@@ -160,7 +157,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-
 /* 댓글 작성란 */
 .comment-container {
   display: flex;
@@ -195,7 +191,6 @@
   background-color: #ffb3b3;
 }
 
-
 .list-group {
   margin-top: 50px;
 }
@@ -204,7 +199,6 @@
   max-width: 800px;
   margin: 0 auto;
 }
-
 
 .list-group-item {
   border: none;
@@ -222,7 +216,7 @@
 
 .comment-date {
   margin-left: 30px;
-  color:darkgray;
+  color: darkgray;
 }
 
 .board-title {
