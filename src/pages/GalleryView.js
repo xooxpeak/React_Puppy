@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card } from 'react-bootstrap';
-import { useCookies } from "react-cookie";
 import Nav2 from "../components/Nav2";
 import '../css/GalleryView.css';
+import { useAxios } from '../AxiosContext'; // Axios 인스턴스 가져오기
 
 let GalleryView = () => {
-    let [cookies] = useCookies(['accessToken']);
     let { id } = useParams(); // URL에서 id 파라미터를 가져옴
     let [imageSrc, setImageSrc] = useState(''); // Base64 인코딩된 이미지 데이터 상태 변수
     let [imageData, setImageData] = useState(null); // 이미지 메타 데이터 상태 변수
+    const axios = useAxios(); // Axios 인스턴스 사용
 
     // id를 사용하여 이미지의 상세 정보를 가져오는 API 호출
     // 바이트 코드로 받아온 이미지를 Base64 문자열로 인코딩
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/v1/auth/y/galleryView?id=${id}`, {
-            headers: {
-                Authorization: `Bearer ${cookies.accessToken}`
-            },
+        axios.get(`/api/v1/auth/y/galleryView?id=${id}`, {
             responseType: 'arraybuffer' // 이미지 데이터를 바이트 배열로 받음
         })
             .then((response) => {
@@ -41,8 +36,7 @@ let GalleryView = () => {
                 console.error("Error:", error);
                 alert("이미지 상세 정보 불러오기 실패");
             });
-    }, [id]); // 의존성 배열에 id를 포함하여 id가 변경될 때마다 useEffect가 실행되도록 설정
-
+    }, [id, axios]); // 의존성 배열에 id와 axios를 포함하여 id가 변경될 때마다 useEffect가 실행되도록 설정
 
     // 이미지 데이터가 로드되지 않았을 경우 로딩 상태 표시
     if (!imageData) {
