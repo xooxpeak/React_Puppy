@@ -4,7 +4,7 @@ import Nav2 from '../components/Nav2';
 import '../css/NoteList.css';
 import { useNavigate } from 'react-router-dom';
 import { useAxios } from '../AxiosContext';   // Axios 인스턴스 가져오기
-
+import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 임포트
 
 const NoteList = () => {
   const navigate = useNavigate();
@@ -16,15 +16,15 @@ const NoteList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const notesPerPage = 7;
 
-    // 로그인 X
-    useEffect(() => {
-      // 토큰으로 로그인 검증
-      if (!cookies.accessToken) {
-        alert('로그인 해주세요!');
-        navigate('/login');
-        return;
-      }
-    
+  // 로그인 X
+  useEffect(() => {
+    // 토큰으로 로그인 검증
+    if (!cookies.accessToken) {
+      alert('로그인 해주세요!');
+      navigate('/login');
+      return;
+    }
+
     // 로그인 O
     // AxiosInstace 사용 o
     axios.get('/api/v1/auth/y/note')
@@ -38,7 +38,6 @@ const NoteList = () => {
       });
   }, [axios]);
 
-
   // 페이지네이션
   const indexOfLastNote = currentPage * notesPerPage;
   const indexOfFirstNote = indexOfLastNote - notesPerPage;
@@ -46,12 +45,10 @@ const NoteList = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
   // 알림장 상세보기
   let handleClick = (id) => {
     navigate(`/noteView/${id}`);
   };
-
 
   // 알림장 등록 버튼
   let handleCreateNote = () => {
@@ -82,12 +79,16 @@ const NoteList = () => {
           <div className="no-notes">등록된 알림장이 없습니다.</div>
         )}
       </div>
-      <div className="pagination">
-        {[...Array(Math.ceil(notes.length / notesPerPage)).keys()].map(number => (
-          <button key={number + 1} onClick={() => paginate(number + 1)} className="page-link">
-            {number + 1}
-          </button>
-        ))}
+      <div className="d-flex justify-content-center">
+        <ul className="pagination">
+          {[...Array(Math.ceil(notes.length / notesPerPage)).keys()].map(number => (
+            <li key={number + 1} className="page-item">
+              <button onClick={() => paginate(number + 1)} className="page-link">
+                {number + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
